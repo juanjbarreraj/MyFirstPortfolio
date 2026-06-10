@@ -4,372 +4,371 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Portfolio</title>
+    <meta
+      name="description"
+      content="Juan Barrera builds business websites, web applications, APIs, dashboards, automation tools, and data-driven digital systems."
+    />
+    <title>Juan Barrera | Full-Stack Developer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="mediaqueries.css" />
   </head>
   <body>
-    <nav id="desktop-nav">
-      <div class="logo">Juan Barrera</div>
-      <div>
-        <ul class="nav-links">
-          <li><a href="#about">About</a></li>
-          <li><a href="#experience">Experience</a></li>
-          <li><a href="#projects">Projects</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-      </div>
-    </nav>
-    <nav id="hamburger-nav">
-      <div class="logo">Juan Barrera</div>
-      <div class="hamburger-menu">
-        <div class="hamburger-icon" onclick="toggleMenu()">
+    <header class="site-header">
+      <nav class="nav">
+        <a class="brand" href="#home" aria-label="Juan Barrera home">
+          <span>JB</span>
+          Juan Barrera
+        </a>
+        <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false">
           <span></span>
           <span></span>
           <span></span>
+        </button>
+        <div class="nav-links" id="nav-links">
+          <a href="#about">About</a>
+          <a href="#services">Services</a>
+          <a href="#work">Work</a>
+          <a href="#experience">Experience</a>
+          <a href="#contact">Contact</a>
         </div>
-        <div class="menu-links">
-          <li><a href="#about" onclick="toggleMenu()">About</a></li>
-          <li><a href="#experience" onclick="toggleMenu()">Experience</a></li>
-          <li><a href="#projects" onclick="toggleMenu()">Projects</a></li>
-          <li><a href="#contact" onclick="toggleMenu()">Contact</a></li>
-        </div>
-      </div>
-    </nav>
-    <section id="profile">
-      <div class="section__pic-container">
-        <img src="./assets/profile-pic.png" alt="John Doe profile picture" />
-      </div>
-      <div class="section__text">
-        <p class="section__text__p1">Hello, I'm</p>
-        <h1 class="title">Juan Barrera</h1>
-        <p class="section__text__p2">Future Web Designer</p>
-        <div class="btn-container">
-          <button
-            class="btn btn-color-2"
-            onclick="window.open('./assets/JuanBarrera.Resume.pdf')"
-          >
-            Download CV
-          </button>
-          <button class="btn btn-color-1" onclick="location.href='./#contact'">
-            Contact Info
-          </button>
-        </div>
-        <div id="socials-container">
-          <img
-            src="./assets/linkedin.png"
-            alt="My LinkedIn profile"
-            class="icon"
-            onclick="location.href='https://www.linkedin.com/in/juanjose-barrerajaimes/'"
-          />
-          <img
-            src="./assets/github.png"
-            alt="My Github profile"
-            class="icon"
-            onclick="location.href='https://github.com/JuanBarrera0305'"
-          />
-        </div>
-      </div>
-    </section>
-    <section id="about">
-      <p class="section__text__p1">Get To Know More</p>
-      <h1 class="title">About Me</h1>
-      <div class="section-container">
-        <div class="section__pic-container">
-          <img
-            src="./assets/about-pic.png"
-            alt="Profile picture"
-            class="about-pic"
-          />
-        </div>
-        <div class="about-details-container">
-          <div class="about-containers">
-            <div class="details-container">
-              <img
-                src="./assets/experience.png"
-                alt="Experience icon"
-                class="icon"
-              />
-              <h3>Experience</h3>
-              <p>0+ years (yet) <br />Frontend Development</p>
-            </div>
-            <div class="details-container">
-              <img
-                src="./assets/education.png"
-                alt="Education icon"
-                class="icon"
-              />
-              <h3>Education</h3>
-              <p>B.Sc. Point Park University <br />Applied Computer Science<br />International Business Management</p>
-            </div>
-          </div>
-          <div class="text-container">
-            <p>
-              <h4>Born and raised in Bucaramanga, Colombia. </h4> 
-              I Believe Web Design can become a way to show what our mission is.
-              The possibilities are endless, and vast ways of transmitting our
-              Thoughts and emotions are on the wait to be discovered.
-              My mision is to bring this posibilities through my expressions and thoughts.
-            </p>
+        <a class="nav-action" href="#contact">Work With Me</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" id="home">
+        <div class="hero-content reveal">
+          <p class="kicker">Full-Stack Developer | Data Analytics & AI | Business-Oriented Web Solutions</p>
+          <h1>Modern web systems for businesses that need clarity, speed, and practical results.</h1>
+          <p class="hero-text">
+            I build websites, web applications, APIs, dashboards, and automation tools that connect clean user experience with real business value.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#work">View Work</a>
+            <a class="button dark" href="#contact">Start a Project</a>
+            <a class="button light" href="./assets/JuanBarrera.Resume.pdf" target="_blank" rel="noopener">Resume</a>
           </div>
         </div>
-      </div>
-      <img
-        src="./assets/arrow.png"
-        alt="Arrow icon"
-        class="icon arrow"
-        onclick="location.href='./#experience'"
-      />
-    </section>
-    <section id="experience">
-      <p class="section__text__p1">Explore My</p>
-      <h1 class="title">Experience</h1>
-      <div class="experience-details-container">
-        <div class="about-containers">
-          <div class="details-container">
-            <h2 class="experience-sub-title">Frontend Development</h2>
-            <div class="article-container">
-              <article>
-                <img
-                  src="./assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>HTML</h3>
-                  <p>Intermediate</p>
-                </div>
-              </article>
-              <article>
-                <img
-                  src="./assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>CSS</h3>
-                  <p>Intermediate</p>
-                </div>
-              </article>
-              <article>
-                <img
-                  src="./assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>REACT</h3>
-                  <p>Intermediate</p>
-                </div>
-              </article>
-              <article>
-                <img
-                  src="./assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>JavaScript</h3>
-                  <p>Intermediate</p>
-                </div>
-              </article>
-              <article>
-                <img
-                  src="./assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>TypeScript</h3>
-                  <p>Intermediate</p>
-                </div>
-              </article>
-              <article>
-                <img
-                  src="./assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>Material UI</h3>
-                  <p>Intermediate</p>
-                </div>
-              </article>
+
+        <aside class="hero-card reveal" aria-label="Juan Barrera profile summary">
+          <img src="./assets/profile-pic.png" alt="Juan Barrera profile" />
+          <div class="hero-card-body">
+            <p>Juan Barrera</p>
+            <h2>Developer with a business and data analytics foundation.</h2>
+            <div class="hero-card-tags">
+              <span>React</span>
+              <span>Python</span>
+              <span>SQL</span>
+              <span>APIs</span>
+              <span>Dashboards</span>
+              <span>Automation</span>
             </div>
           </div>
-          <div class="details-container">
-            <h2 class="experience-sub-title">Backend Development</h2>
-            <div class="article-container">
-              <article>
-                <img
-                  src="./assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>OOP</h3>
-                  <p>Intermediate</p>
-                </div>
-              </article>
-              <article>
-                <img
-                  src="./assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>SQL</h3>
-                  <p>Intermediate</p>
-                </div>
-              </article>
-              <article>
-                <img
-                  src="./assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>NoSQL</h3>
-                  <p>Intermediate</p>
-                </div>
-              </article>
-              <article>
-                <img
-                  src="./assets/checkmark.png"
-                  alt="Experience icon"
-                  class="icon"
-                />
-                <div>
-                  <h3>Git</h3>
-                  <p>Intermediate</p>
-                </div>
-              </article>
-            </div>
+        </aside>
+      </section>
+
+      <section class="credibility-strip" aria-label="Portfolio highlights">
+        <article>
+          <strong>Business Websites</strong>
+          <span>Responsive, polished, client-ready sites.</span>
+        </article>
+        <article>
+          <strong>Web Applications</strong>
+          <span>Dashboards, portals, forms, and workflows.</span>
+        </article>
+        <article>
+          <strong>Data Tools</strong>
+          <span>Reports, analytics, automation, and insights.</span>
+        </article>
+      </section>
+
+      <section class="section two-column" id="about">
+        <div class="section-heading reveal">
+          <p class="kicker">About</p>
+          <h2>A Colombian developer in Pittsburgh with a business, software, and leadership background.</h2>
+        </div>
+        <div class="about-copy reveal">
+          <p>
+            I am Juan Barrera, a Colombian developer based in Pittsburgh, Pennsylvania. I double majored in Computer Science and Business Management and I am currently completing a master's degree in Data Analytics and Information Systems at Point Park University.
+          </p>
+          <p>
+            My background combines technology, business, leadership, athletics, and international experience. I have worked on web applications, business websites, APIs, dashboards, data analytics projects, and technology consulting assignments. I am also a student-athlete, tutor, Resident Assistant, and International Students Club President.
+          </p>
+          <div class="about-points">
+            <span>Technical Builder</span>
+            <span>Business Mindset</span>
+            <span>Leadership & Discipline</span>
+            <span>Bilingual: English and Spanish</span>
           </div>
         </div>
-      </div>
-      <img
-        src="./assets/arrow.png"
-        alt="Arrow icon"
-        class="icon arrow"
-        onclick="location.href='./#projects'"
-      />
-    </section>
-    <section id="projects">
-      <p class="section__text__p1">Browse My Recent</p>
-      <h1 class="title">Projects</h1>
-      <div class="experience-details-container">
-        <div class="about-containers">
-          <div class="details-container color-container">
-            <div class="article-container">
-              <img
-                src="./assets/project-1.png"
-                alt="Project 1"
-                class="project-img"
-              />
-            </div>
-            <h2 class="experience-sub-title project-title">Tic Tac Toe Game</h2>
-            <div class="btn-container">
-              <button
-                class="btn btn-color-2 project-btn"
-                onclick="location.href='https://github.com/JuanBarrera0305/MySecondTicTacToe'"
-              >
-                Github
-              </button>
-              <button
-                class="btn btn-color-2 project-btn"
-                onclick="location.href='https://main--flourishing-kitsune-a9f05b.netlify.app/'"
-              >
-                Live Demo
-              </button>
-            </div>
-          </div>
-          <div class="details-container color-container">
-            <div class="article-container">
-              <img
-                src="./assets/project-2.png"
-                alt="Project 2"
-                class="project-img"
-              />
-            </div>
-            <h2 class="experience-sub-title project-title">Library API</h2>
-            <div class="btn-container">
-              <button
-                class="btn btn-color-2 project-btn"
-                onclick="location.href='https://github.com/JuanBarrera0305?tab=repositories&q=End&type=&language=&sort='"
-              >
-                Github
-              </button>
-              <button
-                class="btn btn-color-2 project-btn"
-                onclick="location.href='./TODOLODEAPI/Library.html'"
-              >
-                Live Demo
-              </button>
-            </div>
-          </div>
-          <div class="details-container color-container">
-            <div class="article-container">
-              <img
-                src="./assets/project-3.png"
-                alt="Project 3"
-                class="project-img"
-              />
-            </div>
-            <h2 class="experience-sub-title project-title">Stew's WebPage</h2>
-            <div class="btn-container">
-              <button
-                class="btn btn-color-2 project-btn"
-                onclick="location.href='https://www.stewpgh.com/'"
-              >
-                Live Demo
-              </button>
-            </div>
+      </section>
+
+      <section class="section surface" id="services">
+        <div class="section-heading narrow reveal">
+          <p class="kicker">Services</p>
+          <h2>Digital solutions for businesses, founders, students, and local brands.</h2>
+        </div>
+        <div class="service-grid">
+          <article class="service-card reveal">
+            <span>01</span>
+            <h3>Business Websites</h3>
+            <p>Modern, responsive websites for restaurants, service businesses, personal brands, and local companies.</p>
+          </article>
+          <article class="service-card reveal">
+            <span>02</span>
+            <h3>Web Applications</h3>
+            <p>Custom platforms with dashboards, portals, forms, user flows, and data management.</p>
+          </article>
+          <article class="service-card reveal">
+            <span>03</span>
+            <h3>Automation Tools</h3>
+            <p>Workflow systems that reduce repetitive work and organize business information.</p>
+          </article>
+          <article class="service-card reveal">
+            <span>04</span>
+            <h3>Data Dashboards</h3>
+            <p>Reports and visualizations that help businesses understand performance and make decisions.</p>
+          </article>
+          <article class="service-card reveal">
+            <span>05</span>
+            <h3>Backend & APIs</h3>
+            <p>REST APIs, database-backed systems, integrations, and scalable backend logic.</p>
+          </article>
+          <article class="service-card reveal">
+            <span>06</span>
+            <h3>Portfolio Websites</h3>
+            <p>Personal websites for professionals, athletes, students, and entrepreneurs.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="work">
+        <div class="work-top reveal">
+          <div>
+            <p class="kicker">Selected Work</p>
+            <h2>Projects focused on users, operations, and useful data.</h2>
           </div>
         </div>
-      </div>
-      <img
-        src="./assets/arrow.png"
-        alt="Arrow icon"
-        class="icon arrow"
-        onclick="location.href='./#contact'"
-      />
-    </section>
-    <section id="contact">
-      <p class="section__text__p1">Get in Touch</p>
-      <h1 class="title">Contact Me</h1>
-      <div class="contact-info-upper-container">
-        <div class="contact-info-container">
-          <img
-            src="./assets/email.png"
-            alt="Email icon"
-            class="icon contact-icon email-icon"
-          />
-          <p><a href="mailto:juanjbarreraj@gmail.com">juanjbarreraj@gmail.com</a></p>
+
+        <div class="project-carousel reveal" aria-label="Project showcase">
+          <button class="carousel-arrow carousel-arrow-left" type="button" data-direction="prev" aria-label="Previous project">‹</button>
+          <div class="project-track">
+            <article class="project-card">
+              <div class="project-media"><img src="./assets/project-1.png" alt="Tutoring platform preview" /></div>
+              <div class="project-info">
+                <span class="badge">Featured Project</span>
+                <h3>Full-Stack Tutoring Management Platform</h3>
+                <p>A role-based tutoring platform for scheduling, student dashboards, tutor dashboards, assigned modules, and contact workflows.</p>
+                <dl>
+                  <div><dt>Problem</dt><dd>Organizes tutoring operations across students, parents, and tutors.</dd></div>
+                  <div><dt>Role</dt><dd>Full-stack developer focused on product flow, UI structure, and dashboards.</dd></div>
+                </dl>
+                <div class="tags"><span>React</span><span>Tailwind CSS</span><span>Dashboards</span><span>Scheduling</span></div>
+                <div class="project-actions"><a href="#contact">View Case Study</a><a href="#contact">Live Demo</a></div>
+              </div>
+            </article>
+
+            <article class="project-card">
+              <div class="project-media"><img src="./assets/project-2.png" alt="Restaurant CRUD app preview" /></div>
+              <div class="project-info">
+                <span class="badge">Featured Project</span>
+                <h3>Restaurants CRUD Application</h3>
+                <p>A deployed full-stack restaurant management application with frontend, backend API, and PostgreSQL database.</p>
+                <dl>
+                  <div><dt>Problem</dt><dd>Demonstrates dependable CRUD operations and API communication.</dd></div>
+                  <div><dt>Role</dt><dd>Built frontend, backend routes, database flow, and deployment setup.</dd></div>
+                </dl>
+                <div class="tags"><span>React</span><span>Node.js</span><span>Express</span><span>PostgreSQL</span></div>
+                <div class="project-actions"><a href="#contact">Live Demo</a><a href="https://github.com/JuanBarrera0305" target="_blank" rel="noopener">GitHub</a></div>
+              </div>
+            </article>
+
+            <article class="project-card">
+              <div class="project-media"><img src="./assets/project-3.png" alt="Trackeo project preview" /></div>
+              <div class="project-info">
+                <span class="badge">Featured Project</span>
+                <h3>Trackeo</h3>
+                <p>A sports analytics data platform concept for athlete, competition, performance, filtering, and reporting workflows.</p>
+                <dl>
+                  <div><dt>Problem</dt><dd>Turns scattered performance data into structured information.</dd></div>
+                  <div><dt>Role</dt><dd>Designed the data model, backend concepts, and analytics workflow.</dd></div>
+                </dl>
+                <div class="tags"><span>PostgreSQL</span><span>REST APIs</span><span>Data Modeling</span><span>Sports Analytics</span></div>
+                <div class="project-actions"><a href="#contact">View Case Study</a></div>
+              </div>
+            </article>
+
+            <article class="project-card">
+              <div class="project-media"><img src="./assets/project-1.png" alt="Picklers app preview" /></div>
+              <div class="project-info">
+                <span class="badge muted">Web App</span>
+                <h3>Picklers App</h3>
+                <p>A pickleball results platform focused on structured match data, usability, testing, backend consistency, and real user interaction.</p>
+                <dl>
+                  <div><dt>Problem</dt><dd>Keeps match results consistent, usable, and easier to manage.</dd></div>
+                  <div><dt>Role</dt><dd>Worked across frontend interaction, backend logic, testing, and UX refinement.</dd></div>
+                </dl>
+                <div class="tags"><span>PHP</span><span>JavaScript</span><span>Testing</span><span>UX</span></div>
+                <div class="project-actions"><a href="#contact">Live Demo</a><a href="#contact">Case Study</a></div>
+              </div>
+            </article>
+
+            <article class="project-card">
+              <div class="project-media"><img src="./assets/project-2.png" alt="Business website preview" /></div>
+              <div class="project-info">
+                <span class="badge">Client Website</span>
+                <h3>Efficiency Appliance Services Website</h3>
+                <p>A responsive business website for a Pittsburgh service company, focused on mobile usability and client communication.</p>
+                <dl>
+                  <div><dt>Problem</dt><dd>Creates a clearer digital presence for a local service business.</dd></div>
+                  <div><dt>Role</dt><dd>Designed and developed responsive structure, content flow, and user path.</dd></div>
+                </dl>
+                <div class="tags"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>Responsive Design</span></div>
+                <div class="project-actions"><a href="#contact">Live Site</a></div>
+              </div>
+            </article>
+
+            <article class="project-card">
+              <div class="project-media"><img src="./assets/project-3.png" alt="AI campus simulation preview" /></div>
+              <div class="project-info">
+                <span class="badge muted">AI Project</span>
+                <h3>AI Campus Simulation</h3>
+                <p>An AI-powered campus simulation with interactive agents, time slots, agent types, and an Ask the Agent interface.</p>
+                <dl>
+                  <div><dt>Problem</dt><dd>Makes campus behavior and agent interaction easier to explore.</dd></div>
+                  <div><dt>Role</dt><dd>Connected frontend interaction with AI and Python-backed simulation concepts.</dd></div>
+                </dl>
+                <div class="tags"><span>React</span><span>Flask</span><span>Python</span><span>AI</span></div>
+                <div class="project-actions"><a href="#contact">View Project</a></div>
+              </div>
+            </article>
+
+            <article class="project-card">
+              <div class="project-media"><img src="./assets/project-1.png" alt="Statistics learning website preview" /></div>
+              <div class="project-info">
+                <span class="badge muted">Academic Platform</span>
+                <h3>MIS510 Statistics Learning Website</h3>
+                <p>A custom academic website for chapters, Excel work, quizzes, explanations, and structured statistics materials.</p>
+                <dl>
+                  <div><dt>Problem</dt><dd>Turns course content into a structured digital learning experience.</dd></div>
+                  <div><dt>Role</dt><dd>Built the website structure, learning pages, and supporting interactions.</dd></div>
+                </dl>
+                <div class="tags"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>Data Analysis</span></div>
+                <div class="project-actions"><a href="#contact">Live Site</a><a href="https://github.com/JuanBarrera0305" target="_blank" rel="noopener">GitHub</a></div>
+              </div>
+            </article>
+
+            <article class="project-card">
+              <div class="project-media"><img src="./assets/project-2.png" alt="Analytics dashboard preview" /></div>
+              <div class="project-info">
+                <span class="badge muted">Analytics</span>
+                <h3>Data Analytics & Dashboard Projects</h3>
+                <p>A collection of analytics projects involving Excel dashboards, R models, business intelligence, reporting, and data mining.</p>
+                <dl>
+                  <div><dt>Problem</dt><dd>Transforms raw data into clearer insights for decision-making.</dd></div>
+                  <div><dt>Role</dt><dd>Cleaned data, built reports, and designed dashboard views.</dd></div>
+                </dl>
+                <div class="tags"><span>Excel</span><span>R</span><span>Tableau</span><span>Power BI</span></div>
+                <div class="project-actions"><a href="#contact">View Case Studies</a></div>
+              </div>
+            </article>
+          </div>
+          <button class="carousel-arrow carousel-arrow-right" type="button" data-direction="next" aria-label="Next project">›</button>
         </div>
-        <div class="contact-info-container">
-          <img
-            src="./assets/linkedin.png"
-            alt="LinkedIn icon"
-            class="icon contact-icon"
-          />
-          <p><a href="https://www.linkedin.com/in/juanjose-barrerajaimes/">LinkedIn</a></p>
+        <div class="carousel-dots" aria-label="Project pagination"></div>
+      </section>
+
+      <section class="section skills-section">
+        <div class="section-heading narrow reveal">
+          <p class="kicker">Capabilities</p>
+          <h2>Technical skills with a practical business lens.</h2>
         </div>
-      </div>
-    </section>
-    <footer>
-      <nav>
-        <div class="nav-links-container">
-          <ul class="nav-links">
-            <li><a href="#about">About</a></li>
-            <li><a href="#experience">Experience</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#contact">Contact</a></li>
+        <div class="skills-grid reveal">
+          <article><h3>Frontend</h3><p>HTML, CSS, JavaScript, TypeScript, React, Tailwind CSS, Material UI, UI/UX, animations, responsive design.</p></article>
+          <article><h3>Backend</h3><p>Node.js, Express.js, Flask, REST APIs, PostgreSQL, SQL, NoSQL, backend logic, authentication concepts.</p></article>
+          <article><h3>Data & Analytics</h3><p>Python, pandas, Excel, Tableau, Power BI, data cleaning, dashboards, reporting, and visualization.</p></article>
+          <article><h3>Workflow</h3><p>Git, GitHub, Netlify, Render, Postman, VS Code, deployment, debugging, testing, and documentation.</p></article>
+        </div>
+      </section>
+
+      <section class="section two-column" id="experience">
+        <div class="section-heading reveal">
+          <p class="kicker">Experience</p>
+          <h2>Work shaped by tutoring, residence life, leadership, and athletics.</h2>
+        </div>
+        <div class="experience-list reveal">
+          <article><h3>Tutor, Point Park University</h3><p>Tutored students in programming, data structures, debugging, technical concepts, and academic problem solving.</p></article>
+          <article><h3>Summer Resident Assistant, Pre-College Programs</h3><p>Supported students ages 14 to 17, supervised residential safety, completed night checks, and created activities.</p></article>
+          <article><h3>Resident Educator / Resident Educator Mentor</h3><p>Supported residential students, helped resolve conflicts, mentored peers, and contributed to student life operations.</p></article>
+          <article><h3>International Students Club President</h3><p>Led initiatives to support international students, build community, connect students with resources, and create events.</p></article>
+          <article><h3>Student-Athlete, Track & Field</h3><p>Balanced academics, athletics, leadership, and work while building discipline, resilience, and time management.</p></article>
+          <article><h3>SAAC Representative</h3><p>Represented student-athletes, communicated needs, and contributed to campus athletic leadership.</p></article>
+        </div>
+      </section>
+
+      <section class="section education-story">
+        <div class="education-card reveal">
+          <p class="kicker">Education</p>
+          <h2>Point Park University</h2>
+          <ul>
+            <li>Master's in Data Analytics and Information Systems</li>
+            <li>Bachelor's in Computer Science and Business Management</li>
           </ul>
         </div>
-      </nav>
-      <p>Copyright &#169; 2024 Juan Barrera. All Rights Reserved.</p>
+        <div class="story-card reveal">
+          <p class="kicker">More Than Code</p>
+          <h2>Technology, athletics, leadership, and international experience.</h2>
+          <p>
+            I was born and raised in Bucaramanga, Colombia. As a student-athlete and international student in the United States, I have learned to adapt quickly, work under pressure, communicate across cultures, and stay disciplined while managing academics, work, and competitive sports.
+          </p>
+        </div>
+      </section>
+
+      <section class="contact-section" id="contact">
+        <div class="contact-panel reveal">
+          <div>
+            <p class="kicker">Contact</p>
+            <h2>Let's build something useful.</h2>
+            <p>Whether you need a business website, web application, dashboard, automation tool, or stronger digital presence, I would be happy to connect.</p>
+            <div class="contact-links">
+              <a href="mailto:juanjbarreraj@gmail.com">juanjbarreraj@gmail.com</a>
+              <a href="https://www.linkedin.com/in/juanjbarreraj/" target="_blank" rel="noopener">LinkedIn</a>
+              <a href="https://github.com/JuanBarrera0305" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+          <form action="mailto:juanjbarreraj@gmail.com" method="post" enctype="text/plain">
+            <label>Name<input type="text" name="name" autocomplete="name" required /></label>
+            <label>Email<input type="email" name="email" autocomplete="email" required /></label>
+            <label>Company or Organization<input type="text" name="company" autocomplete="organization" /></label>
+            <label>
+              Project Type
+              <select name="project_type" required>
+                <option value="">Select a project type</option>
+                <option>Business Website</option>
+                <option>Web Application</option>
+                <option>Automation Tool</option>
+                <option>Data Dashboard</option>
+                <option>Portfolio Website</option>
+                <option>Other</option>
+              </select>
+            </label>
+            <label class="wide">Message<textarea name="message" rows="5" required></textarea></label>
+            <button class="button primary wide" type="submit">Send Message</button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>Copyright © 2026 Juan Barrera. All Rights Reserved.</p>
     </footer>
+
     <script src="script.js"></script>
   </body>
 </html>
