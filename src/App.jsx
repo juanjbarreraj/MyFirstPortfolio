@@ -1,3 +1,4 @@
+import IntroTransition from "./components/IntroTransition.jsx";
 import Header from "./components/Header.jsx";
 import Hero from "./components/Hero.jsx";
 import Marquee from "./components/Marquee.jsx";
@@ -23,6 +24,7 @@ export default function App() {
         <Contact />
       </main>
       <Footer />
+      <IntroTransition />
     </>
   );
 }

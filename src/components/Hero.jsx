@@ -1,12 +1,18 @@
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { EASE } from "./Reveal.jsx";
 import { asset } from "../lib/asset.js";
+import { introWillPlay } from "../lib/introSession.js";
+
+/* When the session intro plays, hold the hero entrance until the panels
+   start opening (~0.9s) so the reveal shows the headline rising through
+   the opening seam instead of finishing unseen behind the overlay. */
+const INTRO_DELAY = introWillPlay() ? 0.9 : 0;
 
 const lineReveal = {
   hidden: { y: "112%" },
   show: (i) => ({
     y: 0,
-    transition: { duration: 0.85, delay: 0.12 + i * 0.11, ease: EASE },
+    transition: { duration: 0.85, delay: INTRO_DELAY + 0.12 + i * 0.11, ease: EASE },
   }),
 };
 
@@ -15,7 +21,7 @@ const softRise = {
   show: (i) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.7, delay: 0.55 + i * 0.12, ease: EASE },
+    transition: { duration: 0.7, delay: INTRO_DELAY + 0.55 + i * 0.12, ease: EASE },
   }),
 };
 
@@ -130,14 +136,14 @@ export default function Hero() {
               style={reduced ? undefined : { y: yFrame }}
               initial={reduced ? false : { opacity: 0, x: -10, y: 10 }}
               animate={reduced ? false : { opacity: 1, x: 0, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.75, ease: EASE }}
+              transition={{ duration: 0.8, delay: INTRO_DELAY + 0.75, ease: EASE }}
             />
             <motion.div
               className="portrait-frame"
               style={reduced ? undefined : { y: yImage }}
               initial={reduced ? false : { clipPath: "inset(100% 0% 0% 0%)" }}
               animate={reduced ? false : { clipPath: "inset(0% 0% 0% 0%)" }}
-              transition={{ duration: 0.95, delay: 0.4, ease: EASE }}
+              transition={{ duration: 0.95, delay: INTRO_DELAY + 0.4, ease: EASE }}
             >
               <picture>
                 <source

@@ -1,0 +1,167 @@
+/* Intro transition — retro terminal window on Evening Blue that types the
+   brand line, then divides and opens onto the live site. Visual language
+   matches the navbar keycaps and project-stage chrome: chalk surface, blue
+   border, beacon bevel, small radius, sunset micro-dot. */
+
+.intro {
+  --intro-w: min(440px, 86vw);
+  --intro-h: clamp(118px, 18svh, 142px);
+  position: fixed;
+  inset: 0;
+  height: 100vh;
+  height: 100svh;
+  z-index: 400;
+  overflow: hidden;
+}
+
+/* two half-viewport Evening Blue panels — flush at rest = solid opening
+   state; they carry the window halves with them as they open */
+.intro-panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50.05%; /* hairline overlap so no seam shows at rest */
+  background: var(--evening-blue);
+  will-change: transform;
+}
+
+.intro-panel--l {
+  left: 0;
+}
+
+.intro-panel--r {
+  right: 0;
+}
+
+/* window halves: pixel-identical to the unified window, hidden until the
+   split so the swap is invisible */
+.intro-half {
+  position: absolute;
+  top: calc(50% - var(--intro-h) / 2);
+  height: var(--intro-h);
+  width: calc(var(--intro-w) / 2);
+  background: var(--chalk-white);
+  border: 1px solid var(--blue);
+  box-shadow: 0 3px 0 var(--line-strong), 0 18px 44px rgba(0, 26, 52, 0.4);
+  opacity: 0;
+  overflow: hidden;
+}
+
+.intro.is-open .intro-half {
+  opacity: 1;
+}
+
+.intro-half--l {
+  right: 0;
+  border-right: 0;
+  border-radius: 10px 0 0 10px;
+}
+
+.intro-half--r {
+  left: 0;
+  border-left: 0;
+  border-radius: 0 10px 10px 0;
+}
+
+/* unified window (carries the typed line until the split) */
+.intro-window {
+  position: absolute;
+  left: calc(50% - var(--intro-w) / 2);
+  top: calc(50% - var(--intro-h) / 2);
+  width: var(--intro-w);
+  height: var(--intro-h);
+  background: var(--chalk-white);
+  border: 1px solid var(--blue);
+  border-radius: 10px;
+  box-shadow: 0 3px 0 var(--line-strong), 0 18px 44px rgba(0, 26, 52, 0.4);
+  overflow: hidden;
+  will-change: transform, opacity;
+}
+
+/* title bar — same chrome language as the project media stages */
+.intro-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 14px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+}
+
+.intro-bar i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--line);
+}
+
+.intro-bar i:first-child {
+  background: var(--sunset);
+}
+
+.intro-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  height: calc(var(--intro-h) - 34px);
+  padding: 0 1.2rem;
+  font-family: var(--font-mono);
+  font-size: clamp(0.88rem, 2.6vw, 1.02rem);
+  color: var(--blue);
+}
+
+.intro-prompt {
+  font-weight: 700;
+}
+
+/* terminal typing: one element, steps() clip — no per-character components.
+   "Let’s grow together." = 20 monospace characters.
+   typing 0.18–0.74s · cursor blinks twice 0.74–0.92s */
+.intro-type {
+  width: 0ch;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid var(--blue);
+  padding-right: 1px;
+  animation: intro-typing 560ms steps(20, end) 180ms forwards,
+    intro-blink 90ms steps(1) 740ms 2;
+}
+
+@keyframes intro-typing {
+  from {
+    width: 0ch;
+  }
+  to {
+    width: 20ch;
+  }
+}
+
+@keyframes intro-blink {
+  50% {
+    border-color: transparent;
+  }
+}
+
+/* reserved layer for the future avatar sequence — empty for now */
+.intro-avatar-stage {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* reduced motion: full phrase immediately, no typing, near-instant reveal
+   (component finishes in ~260ms) */
+@media (prefers-reduced-motion: reduce) {
+  .intro-type,
+  .intro--reduced .intro-type {
+    width: auto;
+    animation: none;
+  }
+}
+
+.intro--reduced .intro-type {
+  width: auto;
+  animation: none;
+}
