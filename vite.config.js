@@ -1,8 +1,8 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-// Deployed as a GitHub Pages project site at /MyFirstPortfolio/
+// Deployed to custom domain (juanjbarreraj.com) at root
 export default defineConfig({
-  base: "/MyFirstPortfolio/",
+  base: "/",
   plugins: [react()],
 });
