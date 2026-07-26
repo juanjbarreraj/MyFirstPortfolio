@@ -2,373 +2,93 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Juan Barrera — Full-Stack Software Developer</title>
     <meta
       name="description"
-      content="Juan Barrera builds business websites, web applications, APIs, dashboards, automation tools, and data-driven digital systems."
+      content="Juan Barrera is a full-stack software developer in Pittsburgh, PA. He builds modern software applications and uses AI to create innovative, efficient, and user-focused solutions."
     />
-    <title>Juan Barrera | Full-Stack Developer</title>
+    <meta name="author" content="Juan Barrera" />
+    <link rel="canonical" href="https://juanbarrera0305.github.io/MyFirstPortfolio/" />
+    <meta name="theme-color" content="#ebedeb" />
+    <meta name="color-scheme" content="light" />
+
+    <!-- Social -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Juan Barrera" />
+    <meta property="og:title" content="Juan Barrera — Full-Stack Software Developer" />
+    <meta
+      property="og:description"
+      content="Full-stack software developer in Pittsburgh, PA — building modern applications and using AI to create innovative, efficient, user-focused solutions."
+    />
+    <meta property="og:url" content="https://juanbarrera0305.github.io/MyFirstPortfolio/" />
+    <meta
+      property="og:image"
+      content="https://juanbarrera0305.github.io/MyFirstPortfolio/assets/og-image.png"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Juan Barrera — Full-Stack Software Developer, Pittsburgh PA"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Juan Barrera — Full-Stack Software Developer" />
+    <meta
+      name="twitter:description"
+      content="Full-stack software developer in Pittsburgh, PA — building modern applications and using AI to create innovative, efficient, user-focused solutions."
+    />
+    <meta
+      name="twitter:image"
+      content="https://juanbarrera0305.github.io/MyFirstPortfolio/assets/og-image.png"
+    />
+
+    <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
+
+    <!-- Fonts: Space Grotesk (display) · Inter (body) · JetBrains Mono (labels) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
     />
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="mediaqueries.css" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Juan Barrera",
+        "alternateName": "Juan José Barrera Jaimes",
+        "url": "https://juanbarrera0305.github.io/MyFirstPortfolio/",
+        "image": "https://juanbarrera0305.github.io/MyFirstPortfolio/assets/profile-640.jpg",
+        "jobTitle": "Full-Stack Software Developer",
+        "email": "mailto:juanjbarreraj@gmail.com",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Pittsburgh",
+          "addressRegion": "PA",
+          "addressCountry": "US"
+        },
+        "alumniOf": { "@type": "CollegeOrUniversity", "name": "Point Park University" },
+        "knowsLanguage": ["en", "es"],
+        "sameAs": [
+          "https://github.com/juanjbarreraj",
+          "https://www.linkedin.com/in/juanjbarreraj/"
+        ]
+      }
+    </script>
   </head>
+
   <body>
-    <header class="site-header">
-      <nav class="nav">
-        <a class="brand" href="#home" aria-label="Juan Barrera home">
-          <span>JB</span>
-          Juan Barrera
-        </a>
-        <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-        <div class="nav-links" id="nav-links">
-          <a href="#about">About</a>
-          <a href="#services">Services</a>
-          <a href="#work">Work</a>
-          <a href="#experience">Experience</a>
-          <a href="#contact">Contact</a>
-        </div>
-        <a class="nav-action" href="#contact">Work With Me</a>
-      </nav>
-    </header>
-
-    <main>
-      <section class="hero" id="home">
-        <div class="hero-content reveal">
-          <p class="kicker">Full-Stack Developer | Data Analytics & AI | Business-Oriented Web Solutions</p>
-          <h1>Modern web systems for businesses that need clarity, speed, and practical results.</h1>
-          <p class="hero-text">
-            I build websites, web applications, APIs, dashboards, and automation tools that connect clean user experience with real business value.
-          </p>
-          <div class="hero-actions">
-            <a class="button primary" href="#work">View Work</a>
-            <a class="button dark" href="#contact">Start a Project</a>
-            <a class="button light" href="./assets/JuanBarrera.Resume.pdf" target="_blank" rel="noopener">Resume</a>
-          </div>
-        </div>
-
-        <aside class="hero-card reveal" aria-label="Juan Barrera profile summary">
-          <img src="./assets/profile-pic.png" alt="Juan Barrera profile" />
-          <div class="hero-card-body">
-            <p>Juan Barrera</p>
-            <h2>Developer with a business and data analytics foundation.</h2>
-            <div class="hero-card-tags">
-              <span>React</span>
-              <span>Python</span>
-              <span>SQL</span>
-              <span>APIs</span>
-              <span>Dashboards</span>
-              <span>Automation</span>
-            </div>
-          </div>
-        </aside>
-      </section>
-
-      <section class="credibility-strip" aria-label="Portfolio highlights">
-        <article>
-          <strong>Business Websites</strong>
-          <span>Responsive, polished, client-ready sites.</span>
-        </article>
-        <article>
-          <strong>Web Applications</strong>
-          <span>Dashboards, portals, forms, and workflows.</span>
-        </article>
-        <article>
-          <strong>Data Tools</strong>
-          <span>Reports, analytics, automation, and insights.</span>
-        </article>
-      </section>
-
-      <section class="section two-column" id="about">
-        <div class="section-heading reveal">
-          <p class="kicker">About</p>
-          <h2>A Colombian developer in Pittsburgh with a business, software, and leadership background.</h2>
-        </div>
-        <div class="about-copy reveal">
-          <p>
-            I am Juan Barrera, a Colombian developer based in Pittsburgh, Pennsylvania. I double majored in Computer Science and Business Management and I am currently completing a master's degree in Data Analytics and Information Systems at Point Park University.
-          </p>
-          <p>
-            My background combines technology, business, leadership, athletics, and international experience. I have worked on web applications, business websites, APIs, dashboards, data analytics projects, and technology consulting assignments. I am also a student-athlete, tutor, Resident Assistant, and International Students Club President.
-          </p>
-          <div class="about-points">
-            <span>Technical Builder</span>
-            <span>Business Mindset</span>
-            <span>Leadership & Discipline</span>
-            <span>Bilingual: English and Spanish</span>
-          </div>
-        </div>
-      </section>
-
-      <section class="section surface" id="services">
-        <div class="section-heading narrow reveal">
-          <p class="kicker">Services</p>
-          <h2>Digital solutions for businesses, founders, students, and local brands.</h2>
-        </div>
-        <div class="service-grid">
-          <article class="service-card reveal">
-            <span>01</span>
-            <h3>Business Websites</h3>
-            <p>Modern, responsive websites for restaurants, service businesses, personal brands, and local companies.</p>
-          </article>
-          <article class="service-card reveal">
-            <span>02</span>
-            <h3>Web Applications</h3>
-            <p>Custom platforms with dashboards, portals, forms, user flows, and data management.</p>
-          </article>
-          <article class="service-card reveal">
-            <span>03</span>
-            <h3>Automation Tools</h3>
-            <p>Workflow systems that reduce repetitive work and organize business information.</p>
-          </article>
-          <article class="service-card reveal">
-            <span>04</span>
-            <h3>Data Dashboards</h3>
-            <p>Reports and visualizations that help businesses understand performance and make decisions.</p>
-          </article>
-          <article class="service-card reveal">
-            <span>05</span>
-            <h3>Backend & APIs</h3>
-            <p>REST APIs, database-backed systems, integrations, and scalable backend logic.</p>
-          </article>
-          <article class="service-card reveal">
-            <span>06</span>
-            <h3>Portfolio Websites</h3>
-            <p>Personal websites for professionals, athletes, students, and entrepreneurs.</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="section" id="work">
-        <div class="work-top reveal">
-          <div>
-            <p class="kicker">Selected Work</p>
-            <h2>Projects focused on users, operations, and useful data.</h2>
-          </div>
-        </div>
-
-        <div class="project-carousel reveal" aria-label="Project showcase">
-          <button class="carousel-arrow carousel-arrow-left" type="button" data-direction="prev" aria-label="Previous project">‹</button>
-          <div class="project-track">
-            <article class="project-card">
-              <div class="project-media"><img src="./assets/project-1.png" alt="Tutoring platform preview" /></div>
-              <div class="project-info">
-                <span class="badge">Featured Project</span>
-                <h3>Full-Stack Tutoring Management Platform</h3>
-                <p>A role-based tutoring platform for scheduling, student dashboards, tutor dashboards, assigned modules, and contact workflows.</p>
-                <dl>
-                  <div><dt>Problem</dt><dd>Organizes tutoring operations across students, parents, and tutors.</dd></div>
-                  <div><dt>Role</dt><dd>Full-stack developer focused on product flow, UI structure, and dashboards.</dd></div>
-                </dl>
-                <div class="tags"><span>React</span><span>Tailwind CSS</span><span>Dashboards</span><span>Scheduling</span></div>
-                <div class="project-actions"><a href="#contact">View Case Study</a><a href="#contact">Live Demo</a></div>
-              </div>
-            </article>
-
-            <article class="project-card">
-              <div class="project-media"><img src="./assets/project-2.png" alt="Restaurant CRUD app preview" /></div>
-              <div class="project-info">
-                <span class="badge">Featured Project</span>
-                <h3>Restaurants CRUD Application</h3>
-                <p>A deployed full-stack restaurant management application with frontend, backend API, and PostgreSQL database.</p>
-                <dl>
-                  <div><dt>Problem</dt><dd>Demonstrates dependable CRUD operations and API communication.</dd></div>
-                  <div><dt>Role</dt><dd>Built frontend, backend routes, database flow, and deployment setup.</dd></div>
-                </dl>
-                <div class="tags"><span>React</span><span>Node.js</span><span>Express</span><span>PostgreSQL</span></div>
-                <div class="project-actions"><a href="#contact">Live Demo</a><a href="https://github.com/JuanBarrera0305" target="_blank" rel="noopener">GitHub</a></div>
-              </div>
-            </article>
-
-            <article class="project-card">
-              <div class="project-media"><img src="./assets/project-3.png" alt="Trackeo project preview" /></div>
-              <div class="project-info">
-                <span class="badge">Featured Project</span>
-                <h3>Trackeo</h3>
-                <p>A sports analytics data platform concept for athlete, competition, performance, filtering, and reporting workflows.</p>
-                <dl>
-                  <div><dt>Problem</dt><dd>Turns scattered performance data into structured information.</dd></div>
-                  <div><dt>Role</dt><dd>Designed the data model, backend concepts, and analytics workflow.</dd></div>
-                </dl>
-                <div class="tags"><span>PostgreSQL</span><span>REST APIs</span><span>Data Modeling</span><span>Sports Analytics</span></div>
-                <div class="project-actions"><a href="#contact">View Case Study</a></div>
-              </div>
-            </article>
-
-            <article class="project-card">
-              <div class="project-media"><img src="./assets/project-1.png" alt="Picklers app preview" /></div>
-              <div class="project-info">
-                <span class="badge muted">Web App</span>
-                <h3>Picklers App</h3>
-                <p>A pickleball results platform focused on structured match data, usability, testing, backend consistency, and real user interaction.</p>
-                <dl>
-                  <div><dt>Problem</dt><dd>Keeps match results consistent, usable, and easier to manage.</dd></div>
-                  <div><dt>Role</dt><dd>Worked across frontend interaction, backend logic, testing, and UX refinement.</dd></div>
-                </dl>
-                <div class="tags"><span>PHP</span><span>JavaScript</span><span>Testing</span><span>UX</span></div>
-                <div class="project-actions"><a href="#contact">Live Demo</a><a href="#contact">Case Study</a></div>
-              </div>
-            </article>
-
-            <article class="project-card">
-              <div class="project-media"><img src="./assets/project-2.png" alt="Business website preview" /></div>
-              <div class="project-info">
-                <span class="badge">Client Website</span>
-                <h3>Efficiency Appliance Services Website</h3>
-                <p>A responsive business website for a Pittsburgh service company, focused on mobile usability and client communication.</p>
-                <dl>
-                  <div><dt>Problem</dt><dd>Creates a clearer digital presence for a local service business.</dd></div>
-                  <div><dt>Role</dt><dd>Designed and developed responsive structure, content flow, and user path.</dd></div>
-                </dl>
-                <div class="tags"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>Responsive Design</span></div>
-                <div class="project-actions"><a href="#contact">Live Site</a></div>
-              </div>
-            </article>
-
-            <article class="project-card">
-              <div class="project-media"><img src="./assets/project-3.png" alt="AI campus simulation preview" /></div>
-              <div class="project-info">
-                <span class="badge muted">AI Project</span>
-                <h3>AI Campus Simulation</h3>
-                <p>An AI-powered campus simulation with interactive agents, time slots, agent types, and an Ask the Agent interface.</p>
-                <dl>
-                  <div><dt>Problem</dt><dd>Makes campus behavior and agent interaction easier to explore.</dd></div>
-                  <div><dt>Role</dt><dd>Connected frontend interaction with AI and Python-backed simulation concepts.</dd></div>
-                </dl>
-                <div class="tags"><span>React</span><span>Flask</span><span>Python</span><span>AI</span></div>
-                <div class="project-actions"><a href="#contact">View Project</a></div>
-              </div>
-            </article>
-
-            <article class="project-card">
-              <div class="project-media"><img src="./assets/project-1.png" alt="Statistics learning website preview" /></div>
-              <div class="project-info">
-                <span class="badge muted">Academic Platform</span>
-                <h3>MIS510 Statistics Learning Website</h3>
-                <p>A custom academic website for chapters, Excel work, quizzes, explanations, and structured statistics materials.</p>
-                <dl>
-                  <div><dt>Problem</dt><dd>Turns course content into a structured digital learning experience.</dd></div>
-                  <div><dt>Role</dt><dd>Built the website structure, learning pages, and supporting interactions.</dd></div>
-                </dl>
-                <div class="tags"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>Data Analysis</span></div>
-                <div class="project-actions"><a href="#contact">Live Site</a><a href="https://github.com/JuanBarrera0305" target="_blank" rel="noopener">GitHub</a></div>
-              </div>
-            </article>
-
-            <article class="project-card">
-              <div class="project-media"><img src="./assets/project-2.png" alt="Analytics dashboard preview" /></div>
-              <div class="project-info">
-                <span class="badge muted">Analytics</span>
-                <h3>Data Analytics & Dashboard Projects</h3>
-                <p>A collection of analytics projects involving Excel dashboards, R models, business intelligence, reporting, and data mining.</p>
-                <dl>
-                  <div><dt>Problem</dt><dd>Transforms raw data into clearer insights for decision-making.</dd></div>
-                  <div><dt>Role</dt><dd>Cleaned data, built reports, and designed dashboard views.</dd></div>
-                </dl>
-                <div class="tags"><span>Excel</span><span>R</span><span>Tableau</span><span>Power BI</span></div>
-                <div class="project-actions"><a href="#contact">View Case Studies</a></div>
-              </div>
-            </article>
-          </div>
-          <button class="carousel-arrow carousel-arrow-right" type="button" data-direction="next" aria-label="Next project">›</button>
-        </div>
-        <div class="carousel-dots" aria-label="Project pagination"></div>
-      </section>
-
-      <section class="section skills-section">
-        <div class="section-heading narrow reveal">
-          <p class="kicker">Capabilities</p>
-          <h2>Technical skills with a practical business lens.</h2>
-        </div>
-        <div class="skills-grid reveal">
-          <article><h3>Frontend</h3><p>HTML, CSS, JavaScript, TypeScript, React, Tailwind CSS, Material UI, UI/UX, animations, responsive design.</p></article>
-          <article><h3>Backend</h3><p>Node.js, Express.js, Flask, REST APIs, PostgreSQL, SQL, NoSQL, backend logic, authentication concepts.</p></article>
-          <article><h3>Data & Analytics</h3><p>Python, pandas, Excel, Tableau, Power BI, data cleaning, dashboards, reporting, and visualization.</p></article>
-          <article><h3>Workflow</h3><p>Git, GitHub, Netlify, Render, Postman, VS Code, deployment, debugging, testing, and documentation.</p></article>
-        </div>
-      </section>
-
-      <section class="section two-column" id="experience">
-        <div class="section-heading reveal">
-          <p class="kicker">Experience</p>
-          <h2>Work shaped by tutoring, residence life, leadership, and athletics.</h2>
-        </div>
-        <div class="experience-list reveal">
-          <article><h3>Tutor, Point Park University</h3><p>Tutored students in programming, data structures, debugging, technical concepts, and academic problem solving.</p></article>
-          <article><h3>Summer Resident Assistant, Pre-College Programs</h3><p>Supported students ages 14 to 17, supervised residential safety, completed night checks, and created activities.</p></article>
-          <article><h3>Resident Educator / Resident Educator Mentor</h3><p>Supported residential students, helped resolve conflicts, mentored peers, and contributed to student life operations.</p></article>
-          <article><h3>International Students Club President</h3><p>Led initiatives to support international students, build community, connect students with resources, and create events.</p></article>
-          <article><h3>Student-Athlete, Track & Field</h3><p>Balanced academics, athletics, leadership, and work while building discipline, resilience, and time management.</p></article>
-          <article><h3>SAAC Representative</h3><p>Represented student-athletes, communicated needs, and contributed to campus athletic leadership.</p></article>
-        </div>
-      </section>
-
-      <section class="section education-story">
-        <div class="education-card reveal">
-          <p class="kicker">Education</p>
-          <h2>Point Park University</h2>
-          <ul>
-            <li>Master's in Data Analytics and Information Systems</li>
-            <li>Bachelor's in Computer Science and Business Management</li>
-          </ul>
-        </div>
-        <div class="story-card reveal">
-          <p class="kicker">More Than Code</p>
-          <h2>Technology, athletics, leadership, and international experience.</h2>
-          <p>
-            I was born and raised in Bucaramanga, Colombia. As a student-athlete and international student in the United States, I have learned to adapt quickly, work under pressure, communicate across cultures, and stay disciplined while managing academics, work, and competitive sports.
-          </p>
-        </div>
-      </section>
-
-      <section class="contact-section" id="contact">
-        <div class="contact-panel reveal">
-          <div>
-            <p class="kicker">Contact</p>
-            <h2>Let's build something useful.</h2>
-            <p>Whether you need a business website, web application, dashboard, automation tool, or stronger digital presence, I would be happy to connect.</p>
-            <div class="contact-links">
-              <a href="mailto:juanjbarreraj@gmail.com">juanjbarreraj@gmail.com</a>
-              <a href="https://www.linkedin.com/in/juanjbarreraj/" target="_blank" rel="noopener">LinkedIn</a>
-              <a href="https://github.com/JuanBarrera0305" target="_blank" rel="noopener">GitHub</a>
-            </div>
-          </div>
-          <form action="mailto:juanjbarreraj@gmail.com" method="post" enctype="text/plain">
-            <label>Name<input type="text" name="name" autocomplete="name" required /></label>
-            <label>Email<input type="email" name="email" autocomplete="email" required /></label>
-            <label>Company or Organization<input type="text" name="company" autocomplete="organization" /></label>
-            <label>
-              Project Type
-              <select name="project_type" required>
-                <option value="">Select a project type</option>
-                <option>Business Website</option>
-                <option>Web Application</option>
-                <option>Automation Tool</option>
-                <option>Data Dashboard</option>
-                <option>Portfolio Website</option>
-                <option>Other</option>
-              </select>
-            </label>
-            <label class="wide">Message<textarea name="message" rows="5" required></textarea></label>
-            <button class="button primary wide" type="submit">Send Message</button>
-          </form>
-        </div>
-      </section>
-    </main>
-
-    <footer class="footer">
-      <p>Copyright © 2026 Juan Barrera. All Rights Reserved.</p>
-    </footer>
-
-    <script src="script.js"></script>
+    <div id="root"></div>
+    <noscript>
+      <p style="padding: 2rem; font-family: sans-serif">
+        This portfolio needs JavaScript. Meanwhile: Juan Barrera — full-stack software
+        developer, Pittsburgh PA. <a href="mailto:juanjbarreraj@gmail.com">juanjbarreraj@gmail.com</a>
+        · <a href="https://github.com/juanjbarreraj">GitHub</a> ·
+        <a href="https://www.linkedin.com/in/juanjbarreraj/">LinkedIn</a>
+      </p>
+    </noscript>
+    <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

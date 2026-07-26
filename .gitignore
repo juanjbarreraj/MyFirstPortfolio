@@ -1,1 +1,10 @@
 .DS_Store
+**/.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/
+
+# build
+node_modules/
+dist/
