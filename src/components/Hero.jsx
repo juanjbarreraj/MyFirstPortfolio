@@ -156,13 +156,6 @@ export default function Hero() {
                   decoding="async"
                 />
               </picture>
-              <motion.span
-                className="portrait-accent"
-                aria-hidden="true"
-                initial={reduced ? false : { scaleX: 0 }}
-                animate={reduced ? false : { scaleX: 1 }}
-                transition={{ duration: 0.6, delay: 1.1, ease: EASE }}
-              />
             </motion.div>
           </div>
         </figure>

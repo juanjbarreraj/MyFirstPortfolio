@@ -1,19 +1,52 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useScroll, useMotionValueEvent } from "framer-motion";
 import { asset } from "../lib/asset.js";
 
 /* Two header states:
    – top of page: transparent, editorial "juanbarrera" wordmark
-   – scrolled: Evening Blue bar, wordmark morphs into the JB monogram
-   The crossfade/compression choreography lives in CSS driven by .is-scrolled,
-   so it stays buttery in both directions and costs no JS per frame. */
+   – scrolled: Evening Blue bar, wordmark crossfades into the supplied JB
+     monogram (public/assets/brand/jb-logo-nav.png — a trimmed retina copy
+     of Juan's jb-logo.png; CSS inverts the black mark to white on blue).
+   Nav links carry a hidden "keycap" surface (CSS ::before) that rises on
+   hover/focus and presses in on click. A scroll-spy marks the current
+   section with a small Desert Sunset indicator. */
+
+const SECTIONS = ["projects", "education", "leadership", "contact"];
 
 export default function Header() {
   const { scrollY } = useScroll();
   const [scrolled, setScrolled] = useState(false);
   const [logoOk, setLogoOk] = useState(true);
+  const [current, setCurrent] = useState("");
 
   useMotionValueEvent(scrollY, "change", (v) => setScrolled(v > 48));
+
+  /* scroll-spy: the section crossing the viewport's middle band is current */
+  useEffect(() => {
+    const els = SECTIONS.map((id) => document.getElementById(id)).filter(Boolean);
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            setCurrent(e.target.id);
+          } else {
+            setCurrent((c) => (c === e.target.id ? "" : c));
+          }
+        });
+      },
+      { rootMargin: "-45% 0px -50% 0px" }
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
+  const link = (id, label) => (
+    <li>
+      <a href={`#${id}`} className={current === id ? "is-current" : undefined}>
+        <span className="nav-label">{label}</span>
+      </a>
+    </li>
+  );
 
   return (
     <header className={`site-head${scrolled ? " is-scrolled" : ""}`} id="site-head">
@@ -27,9 +60,9 @@ export default function Header() {
           <span className="brand-logo" aria-hidden="true">
             {logoOk ? (
               <img
-                src={asset("assets/brand/jb-logo.svg")}
+                src={asset("assets/brand/jb-logo-nav.png")}
                 alt=""
-                width="34"
+                width="49"
                 height="34"
                 onError={() => setLogoOk(false)}
               />
@@ -39,18 +72,10 @@ export default function Header() {
           </span>
         </a>
         <ul className="nav-links">
-          <li>
-            <a href="#projects">Projects</a>
-          </li>
-          <li>
-            <a href="#education">Education</a>
-          </li>
-          <li>
-            <a href="#leadership">Leadership</a>
-          </li>
-          <li>
-            <a href="#contact">Contact</a>
-          </li>
+          {link("projects", "Projects")}
+          {link("education", "Education")}
+          {link("leadership", "Leadership")}
+          {link("contact", "Contact")}
         </ul>
         <a
           className="btn btn-ghost nav-resume"

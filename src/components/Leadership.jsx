@@ -1,5 +1,9 @@
 import { Reveal, Stagger, StaggerItem } from "./Reveal.jsx";
 
+/* Seven roles in Juan's approved order. Rows pair related experiences:
+   (Tutor / RA) · (Resident Educator / RE Mentor) · (ISC President / SAAC),
+   closing with the featured full-width Track & Field captaincy card. */
+
 const ROLES = [
   {
     title: "Tutor — Point Park University",
@@ -12,9 +16,16 @@ const ROLES = [
     skills: ["Responsibility", "Decision-Making", "Conflict Management", "Organization", "Student Support"],
   },
   {
-    title: "Resident Educator & Mentor",
-    desc: "Guided residential students, helped resolve conflicts, supported community standards, mentored fellow student leaders, and contributed to a welcoming and well-organized residential environment.",
-    skills: ["Peer Mentorship", "Conflict Resolution", "Emotional Intelligence", "Teamwork", "Community Leadership"],
+    title: "Resident Educator",
+    duration: "2 Years",
+    desc: "Supported residential students for two years by building community, maintaining residence-life standards, responding to student concerns, helping resolve conflicts, and contributing to a safe and welcoming residential environment.",
+    skills: ["Community Leadership", "Conflict Resolution", "Student Support", "Responsibility", "Communication", "Problem-Solving"],
+  },
+  {
+    title: "Resident Educator Mentor",
+    duration: "1 Year",
+    desc: "Served as a mentor to fellow Resident Educators by providing guidance, sharing experience, supporting team communication, and helping student leaders respond effectively to residential responsibilities and challenges.",
+    skills: ["Peer Mentorship", "Team Leadership", "Coaching", "Emotional Intelligence", "Collaboration", "Decision-Making"],
   },
   {
     title: "President — International Students Club",
@@ -22,10 +33,16 @@ const ROLES = [
     skills: ["Strategic Leadership", "Event Coordination", "Public Communication", "Inclusion", "Collaboration", "Community Building"],
   },
   {
-    title: "Student-Athlete — Track & Field",
-    wide: true,
-    desc: "Balanced academics, employment, leadership responsibilities, and high-level athletic training while developing discipline, resilience, accountability, and the ability to perform consistently under pressure.",
-    skills: ["Discipline", "Resilience", "Time Management", "Teamwork", "Accountability", "Performance Under Pressure"],
+    title: "SAAC Representative — Student-Athlete Advisory Committee",
+    duration: "2 Years",
+    desc: "Represented student-athletes through the Student-Athlete Advisory Committee, contributed to discussions affecting the athletic community, communicated student-athlete perspectives, and supported initiatives connecting athletics, campus leadership, and student engagement.",
+    skills: ["Student Representation", "Advocacy", "Communication", "Collaboration", "Campus Engagement", "Athletic Leadership"],
+  },
+  {
+    title: "Track & Field Team Captain and Student-Athlete",
+    featured: true,
+    desc: "Balanced academics, employment, campus leadership, and high-level athletic training while serving as a Track & Field Team Captain. Earned multiple conference podium finishes, including conference championships, runner-up finishes, and third-place finishes, while breaking several Point Park University school records throughout my collegiate athletic career.",
+    skills: ["Team Captaincy", "Discipline", "Resilience", "Performance Under Pressure", "Accountability", "Time Management", "Team Leadership", "Competitive Excellence"],
   },
 ];
 
@@ -43,7 +60,8 @@ export default function Leadership() {
         </h2>
         <p className="section-lede">
           The habits that make software teams work — clear communication, accountability,
-          mentorship, and staying steady under pressure — were built here.
+          mentorship, representing others, and staying steady under pressure — were built
+          here.
         </p>
       </Reveal>
 
@@ -53,9 +71,10 @@ export default function Leadership() {
             as="article"
             variant="rise"
             key={r.title}
-            className={`card lead-card${r.wide ? " lead-card--wide" : ""}`}
+            className={`card lead-card${r.featured ? " lead-card--wide lead-card--feature" : ""}`}
           >
             <h3 className="lead-title">{r.title}</h3>
+            {r.duration && <p className="lead-meta">{r.duration}</p>}
             <p className="lead-desc">{r.desc}</p>
             <ul className="tag-row" aria-label="Leadership skills">
               {r.skills.map((s) => (
