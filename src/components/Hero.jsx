@@ -4,9 +4,9 @@ import { asset } from "../lib/asset.js";
 import { introWillPlay } from "../lib/introSession.js";
 
 /* When the session intro plays, hold the hero entrance until the panels
-   start opening (~0.9s) so the reveal shows the headline rising through
+   start opening (~2.4s) so the reveal shows the headline rising through
    the opening seam instead of finishing unseen behind the overlay. */
-const INTRO_DELAY = introWillPlay() ? 0.9 : 0;
+const INTRO_DELAY = introWillPlay() ? 2.3 : 0;
 
 const lineReveal = {
   hidden: { y: "112%" },

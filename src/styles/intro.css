@@ -118,7 +118,7 @@
 
 /* terminal typing: one element, steps() clip — no per-character components.
    "Let’s grow together." = 20 monospace characters.
-   typing 0.18–0.74s · cursor blinks twice 0.74–0.92s */
+   typing 0.18–0.74s · steady cursor blink through the bulb hold */
 .intro-type {
   width: 0ch;
   white-space: nowrap;
@@ -126,7 +126,7 @@
   border-right: 2px solid var(--blue);
   padding-right: 1px;
   animation: intro-typing 560ms steps(20, end) 180ms forwards,
-    intro-blink 90ms steps(1) 740ms 2;
+    intro-blink 480ms steps(1) 740ms 4;
 }
 
 @keyframes intro-typing {
@@ -142,6 +142,47 @@
   50% {
     border-color: transparent;
   }
+}
+
+/* lightbulb: space reserved from the start (opacity swap only — the text
+   never shifts). Off = quiet outline; on = Evening Blue stroke, Desert
+   Sunset glass, one restrained glow. No flashing, no bounce. */
+.intro-bulb {
+  display: inline-flex;
+  flex: none;
+  width: 1.3em;
+  height: 1.3em;
+  opacity: 0;
+  color: var(--line-strong);
+  transition: opacity 240ms var(--ease-out), color 320ms var(--ease-out);
+}
+
+.intro-bulb.is-visible {
+  opacity: 1;
+}
+
+.intro-bulb.is-on {
+  color: var(--blue);
+}
+
+.intro-bulb svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.bulb-glass {
+  fill: rgba(214, 139, 26, 0);
+  transition: fill 320ms var(--ease-out), filter 320ms var(--ease-out);
+}
+
+.intro-bulb.is-on .bulb-glass {
+  fill: rgba(214, 139, 26, 0.38);
+  filter: drop-shadow(0 0 5px rgba(214, 139, 26, 0.55));
 }
 
 /* reserved layer for the future avatar sequence — empty for now */
