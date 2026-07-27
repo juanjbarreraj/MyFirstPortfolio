@@ -3,8 +3,9 @@ import { motion, useReducedMotion } from "framer-motion";
 import { introWillPlay, markIntroPlayed } from "../lib/introSession.js";
 import "../styles/intro.css";
 
-/* Branded session intro. The real portfolio is mounted and interactive
-   underneath the whole time — this overlay only covers it, then opens.
+/* Branded intro — plays on every page load. The real portfolio is mounted
+   and interactive underneath the whole time — this overlay only covers it,
+   then opens.
 
    Timeline (total ≈ 3.0s):
      windowIn             0.00–0.18   terminal window rises on Evening Blue

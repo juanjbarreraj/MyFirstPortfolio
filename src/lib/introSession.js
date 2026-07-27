@@ -1,32 +1,16 @@
-/* Once-per-session playback for the intro transition.
-   – sessionStorage only (new browser session ⇒ plays again; refresh ⇒ doesn't)
-   – ?playIntro=true forces a replay for development testing
-   – if storage is unavailable (private mode edge cases) we DON'T play, so a
-     broken environment never loops the intro on every refresh */
+/* Intro playback policy: the intro plays on EVERY page load, including
+   refreshes within the same session (Juan's request, 2026-07). The decision
+   is memoized per load so IntroTransition and Hero always agree. */
 
-const KEY = "portfolioIntroPlayed";
-
-let decision; // memoized so IntroTransition and Hero agree on one answer
+let decision;
 
 export function introWillPlay() {
   if (decision !== undefined) return decision;
-  if (typeof window === "undefined") return (decision = false);
-  try {
-    if (new URLSearchParams(window.location.search).has("playIntro")) {
-      return (decision = true);
-    }
-    decision = sessionStorage.getItem(KEY) !== "1";
-  } catch {
-    decision = false;
-  }
+  decision = typeof window !== "undefined";
   return decision;
 }
 
-/* called only after the transition completed or safely fell back */
-export function markIntroPlayed() {
-  try {
-    sessionStorage.setItem(KEY, "1");
-  } catch {
-    /* storage unavailable — nothing to persist */
-  }
-}
+/* Kept as the completion hook for IntroTransition. Nothing needs persisting
+   while the intro replays on every load; restore sessionStorage gating here
+   if once-per-session behavior is ever wanted again. */
+export function markIntroPlayed() {}
