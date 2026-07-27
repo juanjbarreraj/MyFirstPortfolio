@@ -1558,10 +1558,11 @@ p {
     grid-template-columns: 1fr;
   }
 
+  /* single-column hero: portrait sits centered under the copy */
   .hero-portrait {
-    justify-self: start;
+    justify-self: center;
     width: min(72vw, 330px);
-    margin-top: 1rem;
+    margin-top: 1.4rem;
   }
 }
 
@@ -1582,6 +1583,11 @@ p {
 }
 
 @media (max-width: 620px) {
+  /* tighter vertical rhythm on phones — same proportions, less dead air */
+  :root {
+    --section-pad: clamp(3.4rem, 11vw, 5rem);
+  }
+
   .nav {
     gap: 0.4rem;
   }
@@ -1602,6 +1608,26 @@ p {
 
   .brand {
     min-width: 44px;
+  }
+
+  /* full-width CTAs: easier thumb targets, cleaner stack */
+  .hero-cta {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-inner {
+    padding-top: 2.2rem;
+  }
+
+  .hero-portrait {
+    width: min(78vw, 320px);
+    margin-top: 1.8rem;
+  }
+
+  /* drop the horizontal frame offset so the composition centers optically */
+  .portrait-backframe {
+    transform: translate(0, 14px);
   }
 
   .foot-copy {
