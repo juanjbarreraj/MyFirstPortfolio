@@ -121,7 +121,7 @@ export default function Hero() {
               target="_blank"
               rel="noopener"
             >
-              Download résumé <span className="sr-only">(PDF, opens in a new tab)</span>
+              Download resume <span className="sr-only">(PDF, opens in a new tab)</span>
             </a>
           </motion.div>
         </div>

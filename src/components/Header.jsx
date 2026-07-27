@@ -51,7 +51,7 @@ export default function Header() {
   return (
     <header className={`site-head${scrolled ? " is-scrolled" : ""}`} id="site-head">
       <nav className="nav" aria-label="Primary">
-        <a className="brand" href="#top" aria-label="Juan Barrera — home">
+        <a className="brand" href="#top" aria-label="Juan Barrera, home">
           <span className="brand-word" aria-hidden="true">
             <span className="brand-prompt">&#10095;</span>
             <span className="brand-name">juanbarrera</span>
@@ -83,7 +83,7 @@ export default function Header() {
           target="_blank"
           rel="noopener"
         >
-          Résumé
+          Resume
           <svg className="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
             <path d="M12 4v11m0 0 4.5-4.5M12 15l-4.5-4.5M5 19.5h14" />
           </svg>

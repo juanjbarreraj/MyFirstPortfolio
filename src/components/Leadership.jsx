@@ -6,12 +6,12 @@ import { Reveal, Stagger, StaggerItem } from "./Reveal.jsx";
 
 const ROLES = [
   {
-    title: "Tutor — Point Park University",
+    title: "Tutor · Point Park University",
     desc: "Mentored students in programming, data structures, debugging, and technical problem-solving while adapting explanations to different learning styles and helping students build confidence and independence.",
     skills: ["Mentorship", "Technical Communication", "Patience", "Adaptability", "Problem-Solving"],
   },
   {
-    title: "Summer Resident Assistant — Pre-College Programs",
+    title: "Summer Resident Assistant · Pre-College Programs",
     desc: "Supported and supervised students between the ages of 14 and 17, maintained a safe residential environment, managed night checks, organized activities, and responded calmly to student concerns and unexpected situations.",
     skills: ["Responsibility", "Decision-Making", "Conflict Management", "Organization", "Student Support"],
   },
@@ -28,12 +28,12 @@ const ROLES = [
     skills: ["Peer Mentorship", "Team Leadership", "Coaching", "Emotional Intelligence", "Collaboration", "Decision-Making"],
   },
   {
-    title: "President — International Students Club",
+    title: "President · International Students Club",
     desc: "Led initiatives supporting international students, coordinated events, strengthened communication between students and university resources, and helped create a more connected and inclusive campus community.",
     skills: ["Strategic Leadership", "Event Coordination", "Public Communication", "Inclusion", "Collaboration", "Community Building"],
   },
   {
-    title: "SAAC Representative — Student-Athlete Advisory Committee",
+    title: "SAAC Representative · Student-Athlete Advisory Committee",
     duration: "2 Years",
     desc: "Represented student-athletes through the Student-Athlete Advisory Committee, contributed to discussions affecting the athletic community, communicated student-athlete perspectives, and supported initiatives connecting athletics, campus leadership, and student engagement.",
     skills: ["Student Representation", "Advocacy", "Communication", "Collaboration", "Campus Engagement", "Athletic Leadership"],
@@ -59,9 +59,9 @@ export default function Leadership() {
           student support.
         </h2>
         <p className="section-lede">
-          The habits that make software teams work — clear communication, accountability,
-          mentorship, representing others, and staying steady under pressure — were built
-          here.
+          The habits that make software teams work were built here: clear communication,
+          accountability, mentorship, representing others, and staying steady under
+          pressure.
         </p>
       </Reveal>
 

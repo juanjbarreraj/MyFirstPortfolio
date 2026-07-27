@@ -168,7 +168,7 @@ function HorizontalJourney() {
               end to end.
             </h2>
             <p className="section-lede">
-              Product thinking, interface design, back-end logic, and delivery — four
+              Product thinking, interface design, back-end logic, and delivery: four
               different products for four different kinds of users.
             </p>
             <ol className="journey-toc" aria-label="Project index">
@@ -218,7 +218,7 @@ function HorizontalJourney() {
 
         <nav className="journey-progress" aria-label="Project progress">
           <span className="journey-count" aria-hidden="true">
-            01—04
+            01·04
           </span>
           <div className="journey-bar" aria-hidden="true">
             <motion.span className="journey-bar-fill" style={{ scaleX: scrollYProgress }} />
@@ -260,7 +260,7 @@ function VerticalJourney() {
           end to end.
         </h2>
         <p className="section-lede">
-          Product thinking, interface design, back-end logic, and delivery — four different
+          Product thinking, interface design, back-end logic, and delivery: four different
           products for four different kinds of users.
         </p>
       </Reveal>

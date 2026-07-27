@@ -10,7 +10,7 @@ export const projects = [
     category: "Consumer subscription product",
     positioning: "A subscription box for kids and dogs.",
     description:
-      "A themed monthly subscription box designed for kids and dogs together — vet-approved enrichment, training tools, and family activities that make responsible pet ownership fun. Every box sold supports shelter dogs. Live at pupoclock.com.",
+      "A themed monthly subscription box designed for kids and dogs together: vet-approved enrichment, training tools, and family activities that make responsible pet ownership fun. Every box sold supports shelter dogs. Live at pupoclock.com.",
     tags: ["Live product", "Subscription box", "Consumer brand"],
     repo: "https://github.com/juanjbarreraj/PupOClock",
     repoLabel: "View Pup O’Clock repository on GitHub",
@@ -38,7 +38,7 @@ export const projects = [
     category: "Community platform",
     positioning: "Pittsburgh’s pickleball platform.",
     description:
-      "A community platform for Pittsburgh pickleball — live player rankings that update after every verified match, tournament creation with bracket management, court discovery with live crowding, and match tracking. Built end to end and live today.",
+      "A community platform for Pittsburgh pickleball: live player rankings that update after every verified match, tournament creation with bracket management, court discovery with live crowding, and match tracking. Built end to end and live today.",
     tags: ["Full-stack", "Community app", "Rankings", "Tournaments", "Live deployment"],
     repo: "https://github.com/juanjbarreraj/Picklers",
     repoLabel: "View Picklers repository on GitHub",
@@ -52,7 +52,7 @@ export const projects = [
     category: "Production client site",
     positioning: "A small business, launched.",
     description:
-      "Production website for a Pittsburgh appliance-repair company — designed, built, and launched on a custom domain. Responsive Bootstrap layout with services, a 20-brand showcase, and click-to-call contact. Live today at efficiencyappliances.com.",
+      "Production website for a Pittsburgh appliance-repair company: designed, built, and launched on a custom domain. Responsive Bootstrap layout with services, a 20-brand showcase, and click-to-call contact. Live today at efficiencyappliances.com.",
     tags: ["HTML", "CSS", "Bootstrap 5", "Custom domain"],
     repo: "https://github.com/juanjbarreraj/EfficiencyApplianceLLC",
     repoLabel: "View Efficiency Appliance LLC repository on GitHub",

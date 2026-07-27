@@ -43,7 +43,7 @@ export default function Contact() {
           </li>
           <li>
             <a href={asset("assets/JuanBarrera.Resume.pdf")} target="_blank" rel="noopener">
-              Résumé <span className="sr-only">(PDF, opens in a new tab)</span>
+              Resume <span className="sr-only">(PDF, opens in a new tab)</span>
             </a>
           </li>
         </ul>

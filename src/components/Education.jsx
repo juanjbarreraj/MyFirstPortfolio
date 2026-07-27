@@ -23,7 +23,7 @@ export default function Education() {
 
       <Stagger className="edu-grid" gap={0.12}>
         <StaggerItem as="article" variant="scale" className="card edu-card">
-          <p className="edu-level">Bachelor’s Degree — Double Major</p>
+          <p className="edu-level">Bachelor’s Degree · Double Major</p>
           <h3 className="edu-title">
             Computer Science
             <br />+ Business Management
