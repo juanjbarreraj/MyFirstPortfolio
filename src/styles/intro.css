@@ -181,8 +181,10 @@
 }
 
 .intro-bulb.is-on .bulb-glass {
-  fill: rgba(214, 139, 26, 0.38);
-  filter: drop-shadow(0 0 5px rgba(214, 139, 26, 0.55));
+  /* bright lit gold: near-solid glass + tight core glow + soft halo */
+  fill: #f6bc4d;
+  filter: drop-shadow(0 0 3px rgba(246, 188, 77, 0.95))
+    drop-shadow(0 0 10px rgba(214, 139, 26, 0.6));
 }
 
 /* reserved layer for the future avatar sequence — empty for now */
