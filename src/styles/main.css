@@ -1604,6 +1604,7 @@ p {
     padding: 0.55rem 0.32rem;
     font-size: 0.66rem;
     letter-spacing: 0.04em;
+    white-space: nowrap;
   }
 
   .brand {
@@ -1670,6 +1671,23 @@ p {
   .brand {
     min-width: 30px;
   }
+
+  /* five links must fit one row on the narrowest phones */
+  .nav-links a {
+    padding: 0.55rem 0.24rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.02em;
+  }
+
+  /* if they still don't fit, the row pans instead of clipping links */
+  .nav-links {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .nav-links::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1711,5 +1729,268 @@ p {
   .vchapter {
     break-inside: avoid;
     box-shadow: none;
+  }
+}
+
+/* 10. In progress ("The Bench") --------------------------------------------
+   Visually distinct from the shipped four on purpose: dashed blueprint
+   borders, a visible WIP status strip, art-directed stages per project,
+   and "Preview" links instead of Live site + Repository. */
+
+.kicker-dot--wip {
+  background: var(--sunset);
+  animation-name: pulse-wip;
+}
+
+@keyframes pulse-wip {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(214, 139, 26, 0.45);
+  }
+  55% {
+    box-shadow: 0 0 0 9px rgba(214, 139, 26, 0);
+  }
+}
+
+.wip-grid {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.2rem, 2.5vw, 1.8rem);
+  align-items: stretch;
+}
+
+.wip-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--panel);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-lg);
+  padding: clamp(1rem, 2vw, 1.4rem);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out),
+    border-color var(--dur) var(--ease-out);
+}
+
+.wip-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--sunset);
+}
+
+.wip-status {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.wip-badge {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #7c5510;
+  background: var(--sunset-soft);
+  border: 1px solid rgba(214, 139, 26, 0.45);
+  border-radius: 999px;
+  padding: 0.32rem 0.7rem;
+  white-space: nowrap;
+}
+
+.wip-status-text {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+/* stages ------------------------------------------------------------- */
+
+.wip-stage {
+  position: relative;
+  aspect-ratio: 16 / 11;
+  margin-bottom: 1.2rem;
+}
+
+.wip-frame {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+}
+
+.wip-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.wip-frame-tag {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--on-blue);
+  background: var(--blue);
+  border-radius: 6px;
+  padding: 0.22rem 0.5rem;
+}
+
+/* Mireya: the same build fanned in both languages */
+.wip-stage--art .wip-frame:first-child {
+  inset: 0 14% 14% 0;
+  transform: rotate(-2.2deg);
+  transform-origin: bottom left;
+}
+
+.wip-stage--art .wip-frame:last-child {
+  inset: 12% 0 0 12%;
+  transform: rotate(1.4deg);
+  transform-origin: bottom right;
+  box-shadow: var(--shadow-lg);
+}
+
+/* Trackeo: product frame + phone + track lanes */
+.wip-stage--track .wip-frame {
+  inset: 0 10% 10% 0;
+}
+
+.wip-phone {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 26%;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 3px solid var(--ink);
+  background: #fff;
+  box-shadow: var(--shadow-lg);
+  z-index: 2;
+}
+
+.wip-phone img {
+  width: 100%;
+  aspect-ratio: 390 / 760;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+.wip-lanes {
+  position: absolute;
+  top: -10px;
+  left: -8px;
+  width: 74px;
+  height: 30px;
+  z-index: -1;
+}
+
+.wip-lanes i {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--sunset);
+  opacity: 0.75;
+  transform: rotate(-14deg);
+}
+
+.wip-lanes i:nth-child(2) {
+  top: 10px;
+  width: 78%;
+}
+
+.wip-lanes i:nth-child(3) {
+  top: 20px;
+  width: 52%;
+}
+
+/* El Globo: one full-bleed dark frame, gallery lighting */
+.wip-stage--globe .wip-frame {
+  inset: 0;
+  background: #04060a;
+  border-color: #2a2f38;
+}
+
+.wip-brass {
+  position: absolute;
+  left: 6%;
+  bottom: -12px;
+  width: 96px;
+  height: 3px;
+  background: linear-gradient(90deg, #b08d3f, rgba(176, 141, 63, 0));
+}
+
+/* body ---------------------------------------------------------------- */
+
+.wip-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.wip-body .chapter-category {
+  margin-top: 0.2rem;
+}
+
+.wip-name {
+  font-size: var(--step-1);
+  line-height: 1.25;
+  margin-top: 0.45rem;
+  letter-spacing: -0.01em;
+}
+
+.wip-desc {
+  margin-top: 0.7rem;
+  color: var(--muted);
+  font-size: var(--step-0);
+  line-height: 1.65;
+}
+
+.wip-body .chapter-tags {
+  margin-top: 1rem;
+}
+
+.wip-link {
+  margin-top: auto;
+  padding-left: 0;
+  padding-top: 1.1rem;
+  color: var(--blue);
+}
+
+.wip-link:hover {
+  color: var(--blue-deep);
+}
+
+.wip-link .ico {
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.wip-link:hover .ico {
+  transform: translate(2px, -2px);
+}
+
+@media (max-width: 1099px) {
+  .wip-grid {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1099px) {
+  .wip-grid {
+    max-width: 720px;
   }
 }

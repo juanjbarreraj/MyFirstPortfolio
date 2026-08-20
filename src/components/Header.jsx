@@ -11,7 +11,7 @@ import { asset } from "../lib/asset.js";
    hover/focus and presses in on click. A scroll-spy marks the current
    section with a small Desert Sunset indicator. */
 
-const SECTIONS = ["projects", "education", "leadership", "contact"];
+const SECTIONS = ["projects", "in-progress", "education", "leadership", "contact"];
 
 export default function Header() {
   const { scrollY } = useScroll();
@@ -73,6 +73,7 @@ export default function Header() {
         </a>
         <ul className="nav-links">
           {link("projects", "Projects")}
+          {link("in-progress", "In progress")}
           {link("education", "Education")}
           {link("leadership", "Leadership")}
           {link("contact", "Contact")}

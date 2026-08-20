@@ -3,6 +3,7 @@ import Header from "./components/Header.jsx";
 import Hero from "./components/Hero.jsx";
 import Marquee from "./components/Marquee.jsx";
 import Projects from "./components/Projects.jsx";
+import InProgress from "./components/InProgress.jsx";
 import Education from "./components/Education.jsx";
 import Leadership from "./components/Leadership.jsx";
 import Contact from "./components/Contact.jsx";
@@ -19,6 +20,7 @@ export default function App() {
         <Hero />
         <Marquee />
         <Projects />
+        <InProgress />
         <Education />
         <Leadership />
         <Contact />

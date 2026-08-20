@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://juanbarrera0305.github.io/MyFirstPortfolio/sitemap.xml
+Sitemap: https://juanjbarreraj.com/sitemap.xml
