@@ -880,6 +880,10 @@ p {
   background: linear-gradient(115deg, transparent 30%, var(--sunset-soft));
 }
 
+.chapter--ops::before {
+  background: linear-gradient(150deg, rgba(31, 110, 78, 0.14), transparent 65%);
+}
+
 .chapter--service::before {
   background: var(--band);
   opacity: 0.75;
@@ -1131,13 +1135,37 @@ p {
   background: var(--blue);
 }
 
-.stage--pk .stage-accent {
-  right: -4px;
-  top: -12px;
-  width: 130px;
-  height: 4px;
-  background: var(--sunset);
-  transform: rotate(-16deg);
+.stage--sp .stage-browser {
+  inset: 0 12% 16% 0;
+}
+
+.stage--sp .stage-card {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 46%;
+  margin: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: #0c1013;
+  box-shadow: var(--shadow-lg);
+}
+
+.stage--sp .stage-card img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: center 32%;
+  display: block;
+}
+
+.stage--sp .stage-accent {
+  left: -14px;
+  top: 10%;
+  width: 3px;
+  height: 58%;
+  background: #1f6e4e;
 }
 
 .stage--ef .stage-browser {
@@ -1566,6 +1594,25 @@ p {
   }
 }
 
+@media (max-width: 900px) {
+  /* five links + the resume button: tighten the row so nothing clips */
+  .nav {
+    gap: 0.5rem;
+  }
+
+  .nav-links a {
+    padding: 0.55rem 0.4rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  .nav-resume {
+    min-height: 42px;
+    padding: 0.6rem 1rem;
+  }
+}
+
 @media (max-width: 860px) {
   .edu-grid,
   .lead-grid {
@@ -1961,6 +2008,22 @@ p {
 
 .wip-body .chapter-tags {
   margin-top: 1rem;
+}
+
+.wip-actions {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.wip-actions .wip-link {
+  margin-top: 0;
+}
+
+.wip-link--repo {
+  color: var(--muted);
 }
 
 .wip-link {

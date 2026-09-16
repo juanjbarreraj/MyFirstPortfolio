@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="Juan Barrera">
+<meta name="theme-color" content="#0C1013">
+<link rel="canonical" href="https://juanjbarreraj.com/work/califree/">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://juanjbarreraj.com/work/califree/">
+<meta property="og:site_name" content="Juan Barrera">
+<meta property="og:title" content="Califree — control panel, world atlas, and the box under both">
+<meta property="og:description" content="Designing, building and operating a self-hosted game server platform on Oracle Cloud ARM: a Flask control panel, a Java service that reads the game's own world generator, two live maps, and zero-touch updates.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%97%BA%EF%B8%8F%3C/text%3E%3C/svg%3E">
+<title>Califree Control Panel</title>
+<meta name="description" content="Case study: designing, building and operating a self-hosted Minecraft server platform on Oracle Cloud ARM — Flask control panel, seed-based world intelligence engine, two live maps, zero-touch updates.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..700&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<style>
+:root{
+  --paper:#E9EBE5;  --paper-2:#DFE2DA;  --rule:#C5CABF;  --rule-soft:#D6DACF;
+  --ink:#131A15;    --ink-2:#414D44;    --ink-3:#6B7770;
+  --lapis:#1B4CA8;  --verd:#1F6E4E;     --torch:#A9661A;  --slime:#39861F;
+  --night:#0C1013;  --night-2:#151C20;  --night-ink:#E7EDE5;
+  --code-bg:#0C1013; --code-ink:#CFDBCE;
+  --grid-line:rgba(111,212,78,.14);
+  --chunk:rgba(111,212,78,.085);
+  --t:.18s; --curve:cubic-bezier(.2,.7,.3,1);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1215; --paper-2:#161D21; --rule:#2A3430; --rule-soft:#212A26;
+    --ink:#E8EDE6;   --ink-2:#A9B5AC;   --ink-3:#7A867E;
+    --lapis:#7BA8F2; --verd:#4FC08D;    --torch:#E8A64A; --slime:#6FD44E;
+  --code-bg:#070A0C; --code-ink:#C7D4C6;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1215; --paper-2:#161D21; --rule:#2A3430; --rule-soft:#212A26;
+  --ink:#E8EDE6;   --ink-2:#A9B5AC;   --ink-3:#7A867E;
+  --lapis:#7BA8F2; --verd:#4FC08D;    --torch:#E8A64A; --slime:#6FD44E;
+  --code-bg:#070A0C; --code-ink:#C7D4C6;
+}
+
+*{box-sizing:border-box;margin:0}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:"Archivo",system-ui,-apple-system,sans-serif;
+  font-variation-settings:"wdth" 100;
+  font-size:17px; line-height:1.62;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+}
+::selection{background:var(--slime);color:var(--night)}
+a{color:inherit;text-decoration:none;border-bottom:1px solid var(--rule);
+  transition:border-color var(--t) var(--curve),color var(--t) var(--curve)}
+a:hover{color:var(--lapis);border-bottom-color:var(--lapis)}
+a:focus-visible{outline:2px solid var(--lapis);outline-offset:3px;border-radius:2px}
+code,.mono{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.82em;
+  font-variation-settings:normal}
+code{background:var(--paper-2);padding:.1em .35em;border-radius:2px;
+  border:1px solid var(--rule-soft)}
+
+h1,h2,h3{font-weight:700;font-variation-settings:"wdth" 122;letter-spacing:-.015em;
+  line-height:1.03;text-wrap:balance}
+h2{font-size:clamp(1.55rem,3.3vw,2.25rem)}
+h3{font-size:1.02rem;font-variation-settings:"wdth" 112;font-weight:600;
+  letter-spacing:0;line-height:1.3}
+
+.wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+p{max-width:68ch}
+p+p{margin-top:.85em}
+
+/* ───────────────────────────── hero: the world, seen from above */
+.hero{position:relative;background:var(--night);color:var(--night-ink);overflow:hidden;
+  border-bottom:1px solid var(--night)}
+.hero .wrap{position:relative;z-index:3;padding:clamp(56px,10vw,120px) 16px clamp(44px,6vw,72px)}
+.field{position:absolute;inset:0;z-index:0}
+/* the 16-unit chunk grid */
+.field svg{width:100%;height:100%;display:block}
+.chunks{position:absolute;inset:0;z-index:1}
+.chunks i{position:absolute;display:block;background:var(--chunk);
+  outline:1px solid rgba(111,212,78,.24);outline-offset:-1px;opacity:0;
+  animation:resolve .5s var(--curve) forwards}
+@keyframes resolve{from{opacity:0;transform:scale(.82)}to{opacity:1;transform:none}}
+.marks{position:absolute;inset:0;z-index:3}
+.marks img{position:absolute;width:34px;height:34px;image-rendering:pixelated;
+  opacity:0;filter:drop-shadow(0 2px 0 rgba(0,0,0,.6));
+  animation:pop .42s var(--curve) forwards}
+@keyframes pop{from{opacity:0;transform:translateY(7px) scale(.7)}to{opacity:.95;transform:none}}
+.hero:after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:linear-gradient(103deg,var(--night) 6%,rgba(12,16,19,.93) 40%,rgba(12,16,19,.2) 86%)}
+/* On a phone the hero is nothing but content, so the terrain gets out of the way. */
+@media (max-width:900px){
+  .marks{display:none}
+  .hero:after{background:linear-gradient(180deg,rgba(12,16,19,.9),rgba(12,16,19,.97))}
+}
+
+h1{font-size:clamp(2.35rem,6.4vw,4.5rem);letter-spacing:-.028em;max-width:19ch}
+.deck{margin-top:1.4rem;max-width:60ch;font-size:clamp(1rem,1.5vw,1.16rem);
+  color:#BEC9BE;line-height:1.55}
+.deck b{color:var(--night-ink);font-weight:500}
+.seedline{margin-top:2.1rem;display:flex;flex-wrap:wrap;gap:6px 26px;
+  font-size:.775rem;color:#79857A}
+.seedline span{white-space:nowrap}
+.seedline b{color:var(--slime);font-weight:500}
+.hero a{border-bottom-color:#38443A}
+.hero a:hover{color:var(--slime);border-bottom-color:var(--slime)}
+
+/* the numbers, as a measured strip rather than cards */
+.gauge{border-top:1px solid #1E262A;margin-top:2.6rem;padding-top:1.4rem;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:22px}
+.gauge div{min-width:0}
+.gauge dt{font-size:clamp(1.35rem,2.5vw,1.8rem);font-weight:700;
+  font-variation-settings:"wdth" 118;letter-spacing:-.02em;line-height:1}
+.gauge dd{margin:.35rem 0 0;font-size:.78rem;color:#8B968C;line-height:1.35}
+
+/* ───────────────────────────── contents */
+.toc{border-bottom:1px solid var(--rule);background:var(--paper-2)}
+.toc .wrap{padding:22px 16px}
+.toc ol{list-style:none;padding:0;margin:0;display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:4px 28px;font-size:.865rem}
+.toc a{border-bottom:none;color:var(--ink-2);display:block;padding:3px 0}
+.toc a:hover{color:var(--lapis)}
+
+/* ───────────────────────────── sections */
+.sec{padding:clamp(42px,6vw,74px) 0;border-bottom:1px solid var(--rule-soft)}
+.sec:last-of-type{border-bottom:none}
+.sec .wrap{display:grid;grid-template-columns:212px minmax(0,1fr);gap:0 56px;
+  grid-template-areas:"head head" "rail body"}
+.sec h2{grid-area:head;margin-bottom:1.6rem;max-width:22ch}
+.rail{grid-area:rail}
+.body{grid-area:body;min-width:0}
+@media (max-width:880px){
+  .sec .wrap{grid-template-columns:1fr;grid-template-areas:"head" "rail" "body";gap:0}
+  .rail{margin-bottom:1.7rem}
+}
+
+/* the rail: where the code actually lives + the stack it touches */
+.where{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.755rem;
+  color:var(--ink-3);line-height:1.75;border-left:2px solid var(--slime);
+  padding:1px 0 1px 11px;word-break:break-word}
+.stack{margin-top:1.1rem;font-size:.795rem;color:var(--ink-2);line-height:1.55}
+.stack b{display:block;color:var(--ink);font-weight:600;font-size:.74rem;
+  font-variation-settings:"wdth" 112;margin-bottom:.15rem}
+.pull{margin-top:1.3rem;padding-top:1rem;border-top:1px solid var(--rule)}
+.pull strong{display:block;font-size:1.65rem;font-weight:700;letter-spacing:-.02em;
+  font-variation-settings:"wdth" 118;line-height:1;color:var(--torch)}
+.pull em{display:block;font-style:normal;font-size:.765rem;color:var(--ink-3);
+  margin-top:.3rem;line-height:1.35}
+
+.body h3{margin:1.9rem 0 .5rem}
+.body h3:first-child{margin-top:0}
+ul{max-width:68ch;padding-left:1.15rem;margin:.7rem 0}
+li{margin:.34rem 0}
+li::marker{color:var(--ink-3)}
+
+/* a note set off from the prose: the thing I'd say out loud in an interview */
+.aside{max-width:60ch;margin:1.5rem 0;padding:.9rem 0 .9rem 16px;
+  border-left:3px solid var(--torch);font-size:.97rem;color:var(--ink-2)}
+.aside b{color:var(--ink);font-weight:600}
+
+pre{max-width:none;margin:1.3rem 0;padding:14px 16px;overflow-x:auto;
+  background:var(--code-bg);color:var(--code-ink);border:1px solid var(--rule);border-radius:3px;
+  font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.755rem;line-height:1.7}
+pre code{background:none;border:none;padding:0;font-size:inherit;color:inherit}
+pre .c{color:#6C7C6E}
+pre .k{color:var(--slime)}
+
+table{border-collapse:collapse;width:100%;max-width:640px;margin:1.3rem 0;font-size:.885rem}
+th,td{text-align:left;padding:.5rem .8rem .5rem 0;border-bottom:1px solid var(--rule-soft)}
+th{font-size:.735rem;font-weight:600;font-variation-settings:"wdth" 112;color:var(--ink-3);
+  border-bottom-color:var(--rule)}
+td.n,th.n{text-align:right;font-family:"JetBrains Mono",ui-monospace,monospace;
+  font-size:.79rem;padding-right:0}
+td.d{color:var(--verd);font-weight:500}
+tbody tr:hover td{background:var(--paper-2)}
+
+/* the architecture drawing */
+.diag{max-width:100%;margin:1.4rem 0 .4rem}
+.diag svg{width:100%;height:auto;display:block;overflow:visible}
+.diag .bx{fill:none;stroke:var(--rule);stroke-width:1}
+.diag .bx.fill{fill:var(--night);stroke:var(--night)}
+.diag .ln{stroke:var(--rule);stroke-width:1;fill:none}
+.diag text{font-family:"Archivo",sans-serif;font-size:13px;font-weight:600;
+  font-variation-settings:"wdth" 112;fill:var(--ink)}
+.diag text.sub{font-family:"JetBrains Mono",monospace;font-size:10.5px;font-weight:400;
+  fill:var(--ink-3)}
+.diag text.inv{fill:var(--night-ink)}
+.diag text.inv.sub{fill:#8B968C}
+.diag text.tag{font-family:"JetBrains Mono",monospace;font-size:10px;font-weight:400;
+  fill:var(--ink-3)}
+.cap{font-size:.775rem;color:var(--ink-3);max-width:60ch;margin-top:.5rem}
+
+/* closing */
+.end{background:var(--night);color:var(--night-ink)}
+.end .wrap{padding:clamp(46px,7vw,84px) 16px}
+.end h2{color:var(--night-ink);margin-bottom:1.15rem;max-width:20ch}
+.end p{color:#BEC9BE}
+.end a{border-bottom-color:#38443A}
+.end a:hover{color:var(--slime);border-bottom-color:var(--slime)}
+.kit{margin-top:2.2rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:1.5rem 40px;max-width:940px}
+.kit h3{color:var(--night-ink);font-size:.8rem;margin-bottom:.35rem}
+.kit p{font-size:.845rem;color:#98A499;line-height:1.55;max-width:none}
+.sign{max-width:none;margin-top:2.8rem;padding-top:1.4rem;border-top:1px solid #1E262A;
+  font-size:.83rem;color:#8B968C;display:flex;flex-wrap:wrap;gap:6px 28px}
+
+@media (prefers-reduced-motion: reduce){
+  *,*:before,*:after{animation-duration:.001s !important;animation-delay:0s !important;
+    transition-duration:.001s !important}
+  .chunks i,.marks img{opacity:1 !important}
+}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="field" aria-hidden="true">
+    <svg preserveAspectRatio="none" viewBox="0 0 800 500">
+      <defs>
+        <pattern id="cg" width="50" height="50" patternUnits="userSpaceOnUse">
+          <path d="M50 0V50H0" fill="none" stroke="var(--grid-line)" stroke-width="1"/>
+        </pattern>
+        <pattern id="rg" width="200" height="200" patternUnits="userSpaceOnUse">
+          <path d="M200 0V200H0" fill="none" stroke="rgba(59,135,229,.16)" stroke-width="1"/>
+        </pattern>
+      </defs>
+      <rect width="800" height="500" fill="url(#cg)"/>
+      <rect width="800" height="500" fill="url(#rg)"/>
+    </svg>
+  </div>
+  <div class="chunks" id="chunks" aria-hidden="true"></div>
+  <div class="marks" id="marks" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <h1>Control panel, world atlas, and the box under both.</h1>
+    <p class="deck"><b>califree.net</b> is a private Minecraft server for a handful of
+      friends. It is also a 20,000-line system I specified, built, deployed and now
+      operate on my own: a Flask control panel behind Caddy on an Oracle ARM instance, a
+      Java service that reads Minecraft's own world generator to work out what the terrain
+      holds before anyone walks there, two live maps, and an update pipeline that keeps
+      all of it current without me opening a terminal.</p>
+    <p class="seedline">
+      <span>Overworld seed <b>1244994422874902852</b></span>
+      <span>Minecraft 26.2</span>
+      <span>Ubuntu 24.04 · aarch64</span>
+      <span>Live at <a href="https://califree.net">califree.net</a></span>
+    </p>
+    <dl class="gauge">
+      <div><dt>20,362</dt><dd>lines across Python, JavaScript, Java, Bash and CSS</dd></div>
+      <div><dt>107</dt><dd>HTTP endpoints in one Flask application</dd></div>
+      <div><dt>13</dt><dd>test suites, 400 assertions, no live game required</dd></div>
+      <div><dt>4</dt><dd>systemd units and 3 cron jobs, self-healing</dd></div>
+      <div><dt>$0</dt><dd>monthly infrastructure cost, by design</dd></div>
+    </dl>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Contents">
+  <div class="wrap">
+    <ol>
+      <li><a href="#why">Why I built it instead of buying it</a></li>
+      <li><a href="#arch">How the system is put together</a></li>
+      <li><a href="#world">Reading the game to predict the world</a></li>
+      <li><a href="#maps">Two maps of the same place</a></li>
+      <li><a href="#auth">Accounts, and a bug worth keeping</a></li>
+      <li><a href="#auto">Running without a terminal</a></li>
+      <li><a href="#cut">The 432 lines I deleted</a></li>
+      <li><a href="#perf">Measuring before optimising</a></li>
+      <li><a href="#test">Testing what can't be reproduced</a></li>
+      <li><a href="#market">If it were a product</a></li>
+    </ol>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════════ why -->
+<section class="sec" id="why">
+  <div class="wrap">
+    <h2>Why I built it instead of buying it</h2>
+    <div class="rail">
+      <p class="where">claude/hosting-research-verdict.md<br>claude/server-info.md</p>
+      <p class="stack"><b>Decision inputs</b>Total cost of ownership, ARM
+        compatibility, per-server licensing, feature gap analysis</p>
+      <div class="pull"><strong>$0 / mo</strong><em>vs. $96–240 a year for a managed
+        host of the same size</em></div>
+    </div>
+    <div class="body">
+      <p>The starting requirement was small: a Minecraft server my friends and I could
+        play on, that I would not have to babysit. The obvious route is a managed host at
+        $8–20 a month, or a free self-hosted panel like Pterodactyl. I researched both and
+        wrote the verdict down before spending anything, because I wanted to be able to
+        defend the choice later.</p>
+      <p>Pterodactyl is excellent at what it does — multi-tenant game hosting with Docker
+        isolation, a node agent, a billing-adjacent user model. For one server and six
+        players that is a lot of machinery to run and keep patched, and it solves the
+        problem I did not have. Managed hosts solve it for money. Neither of them
+        addresses the thing my players actually ask about.</p>
+      <p>Because the questions were never "restart the server." They were <em>where is the
+        nearest village</em>, <em>is this a slime chunk</em>, <em>are there spawners near my
+        base</em>, <em>what biome is at these coordinates</em>. Those questions are about
+        the world, not the process — and no control panel answers them, because answering
+        them means knowing both the mathematics of the seed and which terrain actually
+        exists on disk. That gap is the thesis of this project: the administration layer
+        and the world-knowledge layer belong in the same product.</p>
+      <h3>The constraint I chose on purpose</h3>
+      <p>Oracle Cloud's Always Free tier includes an Ampere ARM allowance, so I took a
+        <code>VM.Standard.A1.Flex</code> with 2 OCPU and 12 GB of RAM in us-ashburn-1,
+        Ubuntu 24.04, 150 GB boot volume. Permanently free, which turns a recurring
+        subscription into a one-time domain registration — the only cost the project has.</p>
+      <p>The price is <code>aarch64</code>. Every piece of the stack needs an ARM build,
+        and anything that quietly expects x86 binary wheels is off the table. That single
+        constraint shaped decisions all the way up: it is a large part of why the Python
+        side of this system depends on <em>Flask and nothing else</em>, with the whole rest
+        of the backend built on the standard library.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ architecture -->
+<section class="sec" id="arch">
+  <div class="wrap">
+    <h2>How the system is put together</h2>
+    <div class="rail">
+      <p class="where">server.py — 5,242 lines<br>static/index.html — 5,182 lines<br>47 GET · 60 POST</p>
+      <p class="stack"><b>Runtime</b>Caddy · gunicorn · Flask 3 · CPython 3.12 ·
+        OpenJDK 21 · systemd · cron</p>
+      <p class="stack"><b>Dependencies</b>Flask. Everything else is the Python standard
+        library: <code>hashlib</code>, <code>hmac</code>, <code>socket</code>,
+        <code>struct</code>, <code>gzip</code>, <code>threading</code>,
+        <code>subprocess</code>.</p>
+    </div>
+    <div class="body">
+      <p>One Flask process serves the whole panel: authentication, server control,
+        accounts and permissions, world management, the map APIs, backups, updates,
+        achievements, the console. It is a single file on purpose — one deployable unit,
+        one restart, no service mesh for six players — and it is organised internally by
+        concern rather than split across packages for the look of it.</p>
+
+      <div class="diag">
+        <svg viewBox="0 0 920 428" role="img" aria-label="Request path from browser through Caddy and gunicorn into Flask, which reaches Minecraft over RCON, a Java biome service over HTTP, region files on disk, and the BlueMap renderer by process.">
+          <rect class="bx" x="360" y="0" width="200" height="46" rx="3"/>
+          <text x="460" y="21" text-anchor="middle">Browser</text>
+          <text class="sub" x="460" y="36" text-anchor="middle">vanilla JS · canvas</text>
+          <path class="ln" d="M460 46V78"/><text class="tag" x="470" y="66">TLS 1.3</text>
+
+          <rect class="bx" x="360" y="78" width="200" height="46" rx="3"/>
+          <text x="460" y="99" text-anchor="middle">Caddy :443</text>
+          <text class="sub" x="460" y="114" text-anchor="middle">Let's Encrypt, renewed</text>
+          <path class="ln" d="M460 124V156"/><text class="tag" x="470" y="144">proxy</text>
+
+          <rect class="bx" x="360" y="156" width="200" height="46" rx="3"/>
+          <text x="460" y="177" text-anchor="middle">gunicorn</text>
+          <text class="sub" x="460" y="192" text-anchor="middle">127.0.0.1:8444 · 1w/12t</text>
+          <path class="ln" d="M460 202V232"/>
+
+          <rect class="bx fill" x="300" y="232" width="320" height="50" rx="3"/>
+          <text class="inv" x="460" y="254" text-anchor="middle">Flask — server.py</text>
+          <text class="inv sub" x="460" y="269" text-anchor="middle">107 endpoints · shared caches under lock</text>
+
+          <path class="ln" d="M460 282V308M106 308H814M106 308V336M342 308V336M578 308V336M814 308V336"/>
+
+          <rect class="bx" x="4" y="336" width="204" height="64" rx="3"/>
+          <text x="106" y="358" text-anchor="middle">Minecraft JVM</text>
+          <text class="sub" x="106" y="374" text-anchor="middle">RCON, binary TCP</text>
+          <text class="sub" x="106" y="389" text-anchor="middle">main thread — careful</text>
+
+          <rect class="bx" x="240" y="336" width="204" height="64" rx="3"/>
+          <text x="342" y="358" text-anchor="middle">Biomas service</text>
+          <text class="sub" x="342" y="374" text-anchor="middle">HTTP on localhost</text>
+          <text class="sub" x="342" y="389" text-anchor="middle">Java, linked to the jar</text>
+
+          <rect class="bx" x="476" y="336" width="204" height="64" rx="3"/>
+          <text x="578" y="358" text-anchor="middle">Region files</text>
+          <text class="sub" x="578" y="374" text-anchor="middle">*.mca, Anvil format</text>
+          <text class="sub" x="578" y="389" text-anchor="middle">parsed in pure Python</text>
+
+          <rect class="bx" x="712" y="336" width="204" height="64" rx="3"/>
+          <text x="814" y="358" text-anchor="middle">BlueMap CLI</text>
+          <text class="sub" x="814" y="374" text-anchor="middle">separate JVM</text>
+          <text class="sub" x="814" y="389" text-anchor="middle">cron, tiles to disk</text>
+        </svg>
+      </div>
+      <p class="cap">Four data sources with four different failure modes. The design work
+        was mostly in deciding how the panel should behave when each of them is slow,
+        missing or lying.</p>
+
+      <h3>The fact that shaped the backend</h3>
+      <p>Minecraft services RCON on its <em>main thread</em> — the same thread that runs
+        the game tick. A slow RCON call does not just make the panel slow, it makes the
+        game stutter for everyone online. Once I confirmed that, a whole class of
+        convenient designs became unacceptable, and every RCON path in the panel had to
+        distinguish "the server is not there" from "the server is busy" and never treat
+        the second as the first. Getting that wrong caused the worst bug in the project's
+        history, which I come back to further down.</p>
+
+      <h3>Operations</h3>
+      <p>Four systemd units: <code>minecraft</code> (inside a <code>screen</code> session,
+        so the console stays attachable for the cases a panel should not try to handle),
+        <code>panel</code>, <code>biomas</code>, and <code>caddy</code>. The biome service
+        is its own unit specifically so it can crash without taking the panel down with
+        it. Three cron jobs: the map render at 09:00 UTC, a panel watchdog every five
+        minutes, a world backup at 08:30.</p>
+      <p>Deployment is a commit. Pushing to the repository triggers a GitHub Actions
+        workflow that rsyncs five paths to the instance over SSH and restarts the panel
+        service. There is no manual file copy anywhere in the loop, which matters more for
+        a one-person project than a large one — I am the only person who would catch a
+        mistake, and I am also the one making it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ world engine -->
+<section class="sec" id="world">
+  <div class="wrap">
+    <h2>Reading the game to predict the world</h2>
+    <div class="rail">
+      <p class="where">scripts/Biomas.java — 488 lines<br>scripts/estructuras.py<br>scripts/recon-worldgen.py<br>nbt.py</p>
+      <p class="stack"><b>Techniques</b>Bytecode reading, compiling against a third-party
+        jar, deterministic PRNG reimplementation, binary format parsing, content-addressed
+        cache keys</p>
+      <div class="pull"><strong>±8192</strong><em>the sampling window whose biome hash
+        becomes the cache key</em></div>
+    </div>
+    <div class="body">
+      <p>This is the part of the project I would most want to talk through in an
+        interview. It answers one question — <em>what is out there?</em> — from two
+        directions that disagree with each other, and reconciling them honestly turned out
+        to be the hard part.</p>
+
+      <h3>What the seed says</h3>
+      <p>Minecraft generates terrain deterministically from a 64-bit seed, so in principle
+        every village, ruined portal, ocean monument and slime chunk in the world can be
+        computed without loading any of it. In practice the placement rules are not
+        documented anywhere I was willing to trust: community wikis lag releases, disagree
+        with each other, and are confidently wrong in exactly the places that matter.</p>
+      <p>So I read the server jar. Minecraft 26.2 ships unobfuscated, which made the
+        implementation the source of truth. From it I <em>confirmed</em> rather than
+        assumed:</p>
+      <ul>
+        <li>structure placement is a grid-candidate test, then a frequency roll, then an
+          exclusion-zone check — with four distinct <code>FrequencyReductionMethod</code>
+          reducers that behave differently and are easy to conflate;</li>
+        <li>the slime-chunk formula, including a <strong>32-bit integer overflow</strong> in
+          the original Java. A direct port to Python is silently wrong, because Python
+          integers do not wrap. This was a real bug in my code, found by comparing against
+          the game rather than against a wiki;</li>
+        <li><code>ForceLoadCommand</code>'s cap of 256 chunks per call — a literal
+          <code>sipush 256</code> in the bytecode — and that forced tickets sit at level 15;</li>
+        <li>that <code>Blender</code> and <code>BlendingData</code> only engage for chunks
+          explicitly marked as needing it, which is what let me reason correctly about
+          seams when trimming a world for a version migration.</li>
+      </ul>
+      <div class="aside"><b>The method, stated plainly:</b> when the documentation is
+        unreliable and the cost of being wrong is <em>silently wrong data</em> rather than a
+        crash, read the implementation. Nothing in the panel tells a player where a village
+        is on the authority of a wiki page.</div>
+
+      <h3>What the disk says</h3>
+      <p>The seed cannot tell you everything. A spawner a player already destroyed is gone;
+        chests get looted; people build things. For anything already generated, the disk is
+        authoritative — so <code>nbt.py</code> parses the Anvil region format directly: the
+        4 KB header of 1,024 location entries (a three-byte sector offset plus a one-byte
+        length), the 4 KB timestamp table behind it, then zlib-compressed NBT per chunk. The
+        <code>Status</code> string is what separates a half-built proto-chunk from a
+        <code>minecraft:full</code> one, and reading it wrong means reporting structures that
+        do not exist yet.</p>
+      <p>The map draws both kinds of knowledge in the same canvas, and is explicit about
+        which is which. That distinction is the whole reason a feature got deleted later.</p>
+
+      <h3>The biome service, and a cache key I am proud of</h3>
+      <p>Biomes are not something you can shortcut. Rather than reimplement multi-noise
+        biome sampling, I wrote <code>Biomas.java</code>: 488 lines that compile
+        <em>against the Minecraft server jar</em> and hold the game's real
+        <code>MultiNoiseBiomeSource</code>, <code>NoiseBasedChunkGenerator</code> and
+        <code>RandomState</code>, exposed over <code>com.sun.net.httpserver</code> with a
+        fixed thread pool. It is the game's own generator, answering over HTTP on localhost.
+        The panel gets exact biomes and I get zero drift from the real world.</p>
+      <p>Biome tiles are expensive, so they are cached — but the cache key is not the
+        version number. It is <code>seed + generator fingerprint</code>, where the
+        fingerprint hashes biome names sampled on a fixed lattice from −8192 to +8192 in
+        steps of 512 at surface height:</p>
+<pre><code><span class="c"># no version table to keep up to date: the key changes</span>
+<span class="c"># the moment world generation does</span>
+clave = <span class="k">"%d-%s"</span> % (semilla, huella())   <span class="c"># huella() hashes the lattice</span></code></pre>
+      <p>If Mojang changes terrain generation in an update, the fingerprint changes and
+        every stale tile is invalidated automatically. No version allowlist, nothing for me
+        to maintain, no possibility of serving a pre-update map as current. Structure tables
+        use the same idea against <code>(jar path, mtime, size)</code>. Designing cache keys
+        so that <em>being wrong is impossible rather than unlikely</em> is a habit I picked
+        up from this system paying me back for it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ maps -->
+<section class="sec" id="maps">
+  <div class="wrap">
+    <h2>Two maps of the same place</h2>
+    <div class="rail">
+      <p class="where">scripts/render-mapa.sh<br>scripts/parche-bluemap.sh<br>scripts/setup-bluemap.sh<br>static/index.html — canvas layer</p>
+      <p class="stack"><b>Rendering</b>BlueMap CLI (WebGL tiles) · HTML canvas 2D with
+        hit-testing, pan, zoom and layered pixel-art markers</p>
+    </div>
+    <div class="body">
+      <p>Players want two different things from a map: to fly around what has been built,
+        and to plan a trip to something nobody has seen yet. Those are different products,
+        so there are two maps.</p>
+
+      <h3>The 3D map</h3>
+      <p>BlueMap renders the real world into WebGL tiles from a separate JVM on a nightly
+        cron. I patched its web application so the 3D view speaks the same biome vocabulary
+        as the panel, and added a control the stock tool does not have: repaint the entire
+        map from scratch, with a choice between starting now or overnight, a live progress
+        bar, and an honest warning that playing during a full render will be laggy.</p>
+      <p>BlueMap has no progress API for this. I found the log format by reading a
+        string-concatenation constant inside the CLI jar — <code>\1: \1%\1</code>, which
+        prints as <code>description: N.NNN% (ETA: …)</code> — and then wrote a test that
+        fails if that format ever changes. The alternative was a progress bar that silently
+        freezes after an upstream release and looks like a hang.</p>
+      <div class="aside">Repaint is the one button in this system that runs a recursive
+        delete. The script refuses to delete anything unless the resolved path ends in
+        <code>/maps</code>, and its test mounts a fake <code>~/bluemap</code> seeded with
+        decoys — the BlueMap web app, its assets, the jar itself — then asserts exactly what
+        survived. <b>The most dangerous line in a codebase should have the most paranoid
+        test, not the most comments.</b></div>
+
+      <h3>The 2D map</h3>
+      <p>The second map is the one that did not exist before: a Chunkbase-equivalent
+        computed from <em>our actual seed</em>, drawn on a canvas inside the panel. Layered
+        icons for villages, ruins, slime chunks and each spawner type; pan and zoom;
+        hit-testing against marker positions so hovering names a structure and lights it up;
+        the layer strip persisting its state across reloads and tab switches because that is
+        what people expect of a map they use every day.</p>
+      <p>All of it is plain JavaScript and a 2D context. No framework, no map library, no
+        build step — which was a deliberate call for a page that has to stay responsive on
+        an ARM instance sharing 12 GB with a Minecraft server and two JVMs.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ auth -->
+<section class="sec" id="auth">
+  <div class="wrap">
+    <h2>Accounts, and a bug worth keeping</h2>
+    <div class="rail">
+      <p class="where">server.py — auth layer<br>claude/cuentas-y-seguridad.md<br>claude/fusion-cuentas.md</p>
+      <p class="stack"><b>Security</b><code>hashlib.scrypt</code> with per-user salt ·
+        HMAC-signed session cookies · <code>secrets.compare_digest</code> · roles plus
+        per-user permission flags · two-factor authentication</p>
+    </div>
+    <div class="body">
+      <p>Passwords are hashed with <code>scrypt</code> from the standard library, with a
+        per-user salt. Sessions are HMAC-signed cookies verified in constant time, which
+        keeps the single gunicorn worker stateless — no session store to lose on restart,
+        no shared state to get wrong across twelve threads. On top of that: roles, per-user
+        permission flags for finer-grained access, two-factor authentication, and a forced
+        password change on first login.</p>
+      <h3>The bug</h3>
+      <p>The forced password change was enforced <em>in the browser</em>. The panel showed a
+        wall the user could not click past, and the API behind it did not care. Anyone who
+        opened developer tools, or simply knew the endpoint names, walked straight around a
+        security control I had written and believed in.</p>
+      <p>I found it, moved the check server-side onto every authenticated request, and kept
+        the story because it is the most useful kind of mistake: I knew the principle
+        perfectly well in the abstract and still shipped the violation in my own code. The
+        browser is not a trust boundary — and a security rule that lives only in the UI is
+        not a rule, it is a suggestion with a nice modal.</p>
+      <h3>Two smaller decisions with teeth</h3>
+      <ul>
+        <li><strong>Account merging.</strong> Players made duplicate accounts, so there is a
+          flow that folds two identities into one while keeping permissions, history and
+          links intact. Identity merges are unglamorous and easy to get subtly wrong, which
+          is exactly why I wrote it rather than asking people to start over.</li>
+        <li><strong>Never hand-write a UUID.</strong> Whitelisting goes through the game's
+          own <code>whitelist add</code> over RCON instead of editing the JSON file
+          directly, because a UUID derived from a username is the <em>offline-mode</em> UUID
+          and is wrong for a real account. A wrong UUID produces a lockout with no error
+          message pointing at the cause — the kind of bug that eats an evening.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ automation -->
+<section class="sec" id="auto">
+  <div class="wrap">
+    <h2>Running without a terminal</h2>
+    <div class="rail">
+      <p class="where">scripts/actualizar.py<br>scripts/api-jar.py<br>scripts/mundos.py<br>claude/actualizacion-automatica.md</p>
+      <p class="stack"><b>Reliability</b>SHA-1 verification against Mojang's manifest ·
+        pre-swap backup · map freeze · automatic rollback · five-minute watchdog</p>
+      <div class="pull"><strong>6 h</strong><em>version check interval; no human in the
+        path from release to live</em></div>
+    </div>
+    <div class="body">
+      <p>The requirement I set for myself was that someone who does not use a terminal
+        should be able to run this server. That rules out "SSH in and swap the jar" as an
+        answer to anything routine.</p>
+      <p>So updates are automatic. Every six hours the panel checks Mojang's version
+        manifest. On a new release it backs up the world, downloads the jar, verifies its
+        SHA-1 against the manifest, stops the server, swaps it in, restarts, restarts the
+        biome service so the structure tables reload against the new version, freezes the
+        map while the swap is in flight, and rolls back if the server does not come back
+        up. A watchdog restarts the panel if it stops answering. Backups run nightly before
+        the render. Worlds are uploaded, inspected and switched from the browser.</p>
+      <h3>Why I stopped trusting the word "automatic"</h3>
+      <p>The updater worked. The panel, meanwhile, kept the structure tables it had read
+        out of the <em>previous</em> jar in memory — so after every update the world map tab
+        kept confidently answering with the old version's generation rules until somebody
+        happened to restart the panel for an unrelated reason. Nothing crashed. Nothing
+        logged an error. The data was just quietly wrong.</p>
+      <p>Two defects, not one. The cache had no invalidation tied to the jar, and jar
+        selection sorted by <em>filename</em>, where <code>"26.2"</code> sorts after
+        <code>"26.10"</code> and a text sort picks the older release. Both are fixed — the
+        cache is keyed on <code>(path, mtime, size)</code>, selection is by modification
+        time — and both are now covered by a test that drops a newer jar on disk underneath
+        the running process and asserts that the tables reload with no restart and no
+        special call.</p>
+      <div class="aside"><b>A manual step hidden inside something advertised as automatic
+        is the worst kind of manual step.</b> Nobody knows it exists until the data has been
+        wrong for weeks and nothing has complained.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ the deletion -->
+<section class="sec" id="cut">
+  <div class="wrap">
+    <h2>The 432 lines I deleted</h2>
+    <div class="rail">
+      <p class="where">git history<br>claude/generadores-y-dungeons.md<br>server.py — comment at the removal site</p>
+      <div class="pull"><strong>432 → 1</strong><em>lines of working code, replaced by one
+        honest sentence in the interface</em></div>
+    </div>
+    <div class="body">
+      <p>I built a feature called "scan this area for spawners." Select a rectangle of
+        unexplored terrain, and the panel would force-load those chunks through RCON, wait
+        for generation, read what appeared, and unload them. It took 432 lines and it
+        worked.</p>
+      <p>It also made the game hitch for everyone online, because force-loading runs
+        through the main thread. It permanently grew the world on disk, for terrain nobody
+        had chosen to visit. And when a request timed out, the panel declared the server
+        dead partway through and abandoned its own cleanup — leaving chunks force-loaded
+        <em>forever</em>, still ticking, invisible, with no record that it had happened.</p>
+      <p>I fixed the timeout handling properly: separate "no connection" from "busy", never
+        abort on a slow reply, and record each batch before issuing it so cleanup survives a
+        crash. Then I wrote out the pros and cons of the feature in full, looked at what it
+        was actually for, and deleted all 432 lines.</p>
+      <h3>What replaced it</h3>
+      <p>A sentence. When the spawner layer is on, the map now says that it shows spawners
+        only in terrain players have already visited; that this is deliberate, because those
+        positions are <em>real and current</em> rather than estimated; and that to see
+        spawners somewhere, go there and wait for the nightly update.</p>
+      <p>Players lost a button and gained a guarantee: nothing on that map is a guess. I
+        left a comment at the deletion site explaining the reasoning and pointing at the git
+        history and the design note, so the next person to have this idea — me, in six
+        months — finds the argument instead of the absence.</p>
+      <div class="aside">Knowing that a feature works is not the same as knowing it should
+        exist. The judgement I most want to be hired for is the second one, and it is the
+        one that only shows up in what a codebase <em>does not</em> contain.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ performance -->
+<section class="sec" id="perf">
+  <div class="wrap">
+    <h2>Measuring before optimising</h2>
+    <div class="rail">
+      <p class="where">scripts/medir-panel.py<br>scripts/panel_falso.py<br>claude/panel-rendimiento-y-movimiento.md</p>
+      <p class="stack"><b>Method</b>Instrumented handler timings and request counts against
+        the real page, driven by Playwright over a fake backend</p>
+      <div class="pull"><strong>−80%</strong><em>network requests per session, 258 → 51</em></div>
+    </div>
+    <div class="body">
+      <p>The frontend had grown to five thousand lines and it felt like it. Instead of
+        guessing, I wrote the measurement first: a harness that drives the real page against
+        a fake panel, times individual handlers and counts every request. Then I optimised
+        against the numbers and re-ran it.</p>
+      <table>
+        <thead><tr><th>Measured</th><th class="n">Before</th><th class="n">After</th><th class="n">Change</th></tr></thead>
+        <tbody>
+          <tr><td>Mouse-move handler</td><td class="n">0.117 ms</td><td class="n">0.004 ms</td><td class="n d">−96%</td></tr>
+          <tr><td>Layer-strip rebuild</td><td class="n">0.950 ms</td><td class="n">0.015 ms</td><td class="n d">−98%</td></tr>
+          <tr><td>Tab switch</td><td class="n">1.085 ms</td><td class="n">0.270 ms</td><td class="n d">−75%</td></tr>
+          <tr><td>Requests per session</td><td class="n">258</td><td class="n">51</td><td class="n d">−80%</td></tr>
+        </tbody>
+      </table>
+      <p>What actually moved the numbers: throttling pointer handling to
+        <code>requestAnimationFrame</code> with a cached bounding rectangle invalidated on
+        scroll and resize; rebuilding the map's layer strip only when its <em>shape</em>
+        changes rather than on every state update; <code>document.hidden</code> guards so a
+        backgrounded tab stops polling entirely; one clock tick driving every timer in the
+        page instead of five independent intervals. And finding an infinite
+        <code>onerror</code> retry loop that was firing 273 requests at a single missing PNG,
+        fixed by nulling the handler in the three places that needed it.</p>
+      <h3>Motion, as a system rather than a pile of effects</h3>
+      <p>In the same pass I gave the panel a motion vocabulary: four tokens — 130 ms for
+        responding to a press, 220 ms for hover and state changes, 360 ms for large pieces
+        entering, one shared easing curve — plus a global
+        <code>prefers-reduced-motion</code> block. The rule I wrote down is that nothing
+        lasts longer than ~350 ms and nothing travels more than a few pixels, because the
+        point is for the interface to <em>answer</em>, not to perform. An animation you
+        notice is an animation in the way.</p>
+      <p>Map icons scale on hover, which required real hit-testing against marker
+          positions in canvas coordinates. That surfaced another bug: there was no
+          <code>pointerleave</code> handler, so an icon the cursor left by exiting the canvas
+          stayed enlarged forever. The test caught it. I did not.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ testing -->
+<section class="sec" id="test">
+  <div class="wrap">
+    <h2>Testing what can't be reproduced</h2>
+    <div class="rail">
+      <p class="where">scripts/panel_falso.py<br>scripts/probar-*.py — 13 suites<br>400 assertions</p>
+      <p class="stack"><b>Doubles built</b>Fake panel serving the real frontend · fake
+        server jars · fake <code>~/bluemap</code> tree with decoy files · a fake
+        <code>java</code> that records its arguments · region files with real Anvil headers</p>
+    </div>
+    <div class="body">
+      <p>This system's dependencies are a running Minecraft server, a JVM biome service
+        holding Mojang's generator, gigabytes of region files, and a 3D renderer. None of
+        that stands up inside a test run, and "it depends on too much to test" is not an
+        answer I was willing to accept.</p>
+      <p>So I built the doubles. <code>panel_falso.py</code> serves the real frontend and
+          answers the real API shapes, driven by Playwright against a real browser, so the
+          user interface is tested as it actually ships rather than through a mock of itself.
+          Around it: fake jars with controllable timestamps, a fake BlueMap directory tree
+          salted with files that must survive, a fake <code>java</code> binary that records
+          the arguments it was invoked with so I can assert the render is forced correctly
+          without rendering anything.</p>
+      <p>Every suite's docstring opens with <em>why this test exists</em>, and the answer is
+        almost always a specific bug. Real ones these caught:</p>
+      <ul>
+        <li>An <code>accept=".zip,.tar,.gz,.tgz"</code> attribute on the upload input, which
+          made macOS grey out the <strong>Open</strong> button for a perfectly valid world
+          archive whose name did not match — with no message explaining why, because the
+          browser does not give one. The backend never cared: it sniffs contents with
+          <code>zipfile.is_zipfile</code> and <code>tarfile.open</code>. The panel was
+          refusing at the door what the server would have happily accepted. Fixed by dropping
+          the attribute and doing magic-number detection in the browser instead.</li>
+        <li>A chunked-upload loop that would re-send forever if the server under-reported
+          the bytes it had received. Found because <em>my own harness</em> under-counted —
+          the bug in the test exposed a real bug in the client. Fixed with a no-progress
+          guard.</li>
+        <li>Jar selection by filename, and the missing <code>pointerleave</code>, both
+          described above.</li>
+      </ul>
+      <div class="aside">The harness is roughly 8,000 lines of Python across 24 scripts —
+        comparable to the panel itself. For a system whose real dependencies cannot be
+        summoned on demand, <b>the test doubles are part of the architecture</b>, not
+        scaffolding around it.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ market -->
+<section class="sec" id="market">
+  <div class="wrap">
+    <h2>If it were a product</h2>
+    <div class="rail">
+      <p class="where">Market read, written for myself</p>
+      <p class="stack"><b>Comparables</b>Pterodactyl and its forks (free, self-hosted,
+        multi-tenant) · Multicraft (licensed per server) · managed hosts at $8–20/month ·
+        Chunkbase (seed tools, browser-only)</p>
+    </div>
+    <div class="body">
+      <p>I did the honest version of this analysis rather than the flattering one, because
+        the answer changes what the project is <em>for</em>.</p>
+      <p>As a control panel, this is not competitive and should not try to be. Pterodactyl
+        owns self-hosted multi-tenant game hosting, it is free, and the moat is a decade of
+        edge cases across dozens of games. What I have is a single-tenant appliance: superb
+        for the server it was built for, and missing the container isolation, node
+        federation, resource accounting and billing hooks that anyone hosting for other
+        people needs on day one.</p>
+      <p>The defensible piece is the other layer — world intelligence tied to a live
+        server. Nobody joins administration to the seed's mathematics and to what is
+        actually on disk, and the reason is instructive: doing it means tracking Mojang's
+        world generation <em>forever</em>. That maintenance burden is exactly why the
+        best-known seed tool lags new Minecraft releases by weeks, which is precisely when
+        players most want it.</p>
+      <p>Which is also where the interesting business answer sits. My cache-key design
+        makes staleness self-announcing instead of silent, and the biome service links
+        against the real jar rather than reimplementing it, so a version bump is mostly a
+        rebuild rather than a research project. That is a genuine structural advantage over
+        the reimplement-and-chase approach. It would still need to be productised —
+        multi-tenancy, per-seed isolation, a cost model for CPU-heavy tile rendering — and I
+        would want a real read on willingness to pay before writing any of it. For now the
+        conclusion I acted on was: keep it an appliance, and let the engineering be the
+        portfolio.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════ closing -->
+<section class="end">
+  <div class="wrap">
+    <h2>What I take from it</h2>
+    <p>One person, one system, from an empty Oracle console to a service my friends use
+      every day and I do not think about. Every layer is mine, which means every failure was
+      also mine to find — and the parts of this write-up I would most want asked about are
+      the bugs, the deletion and the tests, not the feature list.</p>
+    <div class="kit">
+      <div><h3>Cloud &amp; Linux operations</h3><p>Oracle Cloud provisioning, Ubuntu on
+        aarch64, systemd unit design, cron scheduling, Caddy with automatic TLS, firewall
+        and port policy, watchdogs, backup and rollback.</p></div>
+      <div><h3>Backend engineering</h3><p>Python, Flask, 107-endpoint HTTP API design,
+        threading with explicit locks, a binary TCP protocol client, subprocess
+        orchestration, cache-invalidation design, standard-library-first dependency
+        discipline.</p></div>
+      <div><h3>Frontend engineering</h3><p>Vanilla JavaScript at scale, canvas 2D rendering
+        with hit-testing, pan and zoom, performance profiling and measured optimisation, a
+        motion token system, reduced-motion and keyboard accessibility.</p></div>
+      <div><h3>Data &amp; reverse engineering</h3><p>Binary file format parsing (Anvil,
+        NBT), reading JVM bytecode to recover algorithms, reimplementing deterministic PRNG
+        mathematics including integer-overflow behaviour, content-addressed cache keys.</p></div>
+      <div><h3>JVM</h3><p>Java service compiled against a third-party jar, embedded HTTP
+        server with a thread pool, running Minecraft's own registries and world generator
+        out of process.</p></div>
+      <div><h3>Release engineering &amp; testing</h3><p>GitHub Actions CI/CD to a live
+        host, zero-touch dependency upgrades with checksum verification, Playwright browser
+        testing, and test-double architecture for dependencies that cannot be reproduced.</p></div>
+      <div><h3>Security</h3><p>Password storage with scrypt, HMAC session integrity and
+        constant-time comparison, role and permission modelling, two-factor authentication,
+        server-side authorisation — learned properly, by getting it wrong first.</p></div>
+      <div><h3>The business half</h3><p>Build-versus-buy with total cost of ownership,
+        competitive and moat analysis, scope decisions defended in writing, and the
+        discipline to delete working code when it serves the user badly.</p></div>
+    </div>
+    <p class="sign">
+      <span>Juan Barrera</span>
+      <span>B.S. Computer Science &amp; Business · M.S. Information Systems and Data Analytics</span>
+      <span>The server: <a href="https://califree.net">califree.net</a></span>
+      <span>More work: <a href="https://juanjbarreraj.com">juanjbarreraj.com</a></span>
+    </p>
+  </div>
+</section>
+
+<script>
+(function(){
+  // The hero reads as terrain resolving in, because that is what this system does:
+  // it turns an invisible procedural world into something you can look at. One
+  // orchestrated load moment, then the page holds still.
+  var chunks = document.getElementById('chunks'), marks = document.getElementById('marks');
+  if (!chunks) return;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // deterministic placement: the same "world" on every visit, seeded like the real one
+  var s = 1244994422874902852 % 2147483647;
+  function rnd(){ s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; }
+
+  // Loaded terrain thins out toward the left, where the words are: this is an
+  // edge of explored world, not a texture.
+  var html = '', COLS = 20, ROWS = 12;
+  for (var r = 0; r < ROWS; r++) for (var c = 0; c < COLS; c++) {
+    var pesa = Math.pow(c / (COLS - 1), 1.7);          // denser to the right
+    if (rnd() > 0.10 + pesa * 0.74) continue;
+    var d = reduce ? 0 : (0.10 + (c / COLS) * 0.6 + rnd() * 0.28).toFixed(2);
+    html += '<i style="left:' + (c / COLS * 100).toFixed(3) + '%;top:' +
+            (r / ROWS * 100).toFixed(3) + '%;width:' + (100 / COLS).toFixed(3) +
+            '%;height:' + (100 / ROWS).toFixed(3) + '%;animation-delay:' + d + 's"></i>';
+  }
+  chunks.innerHTML = html;
+
+  // Markers stay in the loaded half and clear of the copy.
+  // Markers stay in the loaded half of the map and clear of the copy.
+  var M = [
+    ['data:image/png;base64,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', 70, 14],
+    ['data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAToElEQVR4nNWbebRdVXnAf98+5415Q/JeXkZCIKgIFJytRboUta3aIjWWJbJarIhlsCKI2KVdiENdQoMDaEEUMYCVxqKxQJ2WVgSKKAGsZGDKnLyX5N035s333vP1jz2cfe57ibxL/+nOern3nrPPt7952vsINeNrt911W9rY8jaR6nRC2i7GoCionyEoGQIIgiogigJCPsc+YB/S8KwiIvjJ/rox+ZO1w8NVBXFgVfKbirh11S8a4QAZSqaMGTSdmp76yaUXnPt+CtSAXHPNNdLesaaJpuy05qama4E3HujdRzXLyDK1oPziKPFKMWKWKDc/cERQ1cAdiTilERKWsRoBxDIrTNRovl1QxX1TpUYCAcfEJKRpwtKly1HT+MtKefLjSZI+MdD7TPnTn/50lnqUsmT61QsXtN1F0rJ82+bf6pfXXUvSkFKtVj0+0QoxFcqJXSKJgczh7++KY4CJOCIxku6HqtrnVMnUsgIsPCN2njpmVzPLiNQITw9pJPGYo/kixiRUymUu/+g/cOrLXv7HMya9e2yyei7w0DnngFy37pakpaPlT4wkVzU1NZ75m18/whOPPSzbntpOmiTguVwjLf+xjAG2Pr6RidI+AEb691gtMIaO7mMAobl9YYSkk3CMe8yVwBhhYmQgXBsp7QGF0dHDjjDhrItupl+6yHVijqFKVZXjj1vNH51+hr7q1X+oM+XKr0QrX+jv3X9PmjSnr0gb0y83NbS+pHToIHd/d4MANDY0FpGaCzi5FEXESdKi4YmP52mk3rVE1xLvsAdgtLQ3mGFnZwejo6PB1IwkR8dRwAD79u7n3zdskDUvOpGenp7TpybG2jqWLttrEpOelFU4Ycf25/Tmr1x/ZG90hJGpd3S5w9MgXc2JEkHEIGLNYC76g83X3OtYvCowd3h4OGL0nDI/6rjphmtly+bNqiY9hYxT05bWlo9OTpXNT390r5QGBmlobJkXQCPCyP5nqWaZjQrVCqAM9W0PcwZ71TFA6Fh8rJVexAF1vlxVGRvYa+09y4rO0IYbOtoW0D844vg0b3kxODjC45sekWXLVpq2zvbLU0E6jYjp69uvYpLfD6FmZKqoZtGVYkgM2qDOi8vc9pprUJa7B0e0jzygHCwNYcGYKC48/2GMYef2Z2hO1SRZ1mFAZLjUy8DAQPC+8wIo1luDBNdfsGCv704DHPZ4Sw9/R3Qy+Vev+qpKlmVHeODoQ1D6SwMMHi6hIsYAGDXOc89fA6oZ9O1+FlB6dz0DQO/BEgr0HSx51AHoOzjA05sfs79DaLT3nt7yBE9veZy+Q4Me0zwDIneuuenUBP7nO0xKtVIlm0psOEWCq6rHp9gYL3Bgz3OIMfQe6HfEWuIPHBqY9czTW55wNOQL5lqv9Lln4siSEy5MjhymLuJjvI3NYlP3E59ZzXe49CYkKx5xf08jQvKHajgdh8caGLXfo0Vf0BCXlqcvFFBiJA9zzIEsPlU9cuLjJhXm10YKPyZHDud5WB2456vYDDUtlgXzt4EsU4eIFYsxpuD57R0NPnJOpI54L5RCiJjo+guUmoORKZhMNc3LrHrgSEhK9q6/BVWldPutDNz5zZD0DN15G8ZFgYE7b4sDAyI2l4jzPylEiTwEDgaYkvvQOgi3IwOhmgIprhiph7EC7Lv96wHNwTtuxbiqcOCOWwOOpTu+GYgq3fHNQCjk1Zwt+uYqmvKgMHnPBnptOYCRYro+n6ECoiSpEaZrSpx5D2OsnESVTDxylpbMcWBO2D60uf8MWEc8h7vwn72jOaxqpjD/yB3WVBQD0uDts04LsEUJijGWcBNJLHyP1d5f9yaA/fOIGeNNI7/miV7Rnk+sxwkWcEdIgUY0yzGYNxBIz7gg2OXV639QzPNrEhjv3WOG+1Q/DpXi/FLuT+1zl/zp62j1z2y/ry58A25oOUV1QtGu+hxKbLcUUlxPhM+S0fyab5T4zCE0PMj7Ppb++EHy6x5OHUZbrFNJUoRU/Bp1etVah5V/avitFOO6Z0IBNQHR8ICb5yOUREyQeMo8h0YfakxMdj0AvbNzmMUfFAiszexqssG5egF53yB30sb4nsILcACSa1gKWbk2M53PyBRaWpoDxj/fsq9wv+HqJitAVcQI95nz5oTj7f8suQuqOX8qn5suzHvwn/++fmQtkvGq1VQzWmmSevUpByc2C5w9fFyXvAg8mvRcPnLkqKR5MlRn3uKbz4pKaq8ldScBvx+Jmjw3IF9TIPl7VXLHeQTY9jGtC+UctmVFijFlkeqsAu35jkxrMrpoiAhiQDPnwzK4bsNPCvfjYQR0rb8JksxFYu4ks7qyV5d1ioIYSbVq3Wu9LkVV+c1j/2NNQAwzX7jMoum6uz9tviCoyTXf2khVlHWXnIuqBpMplfKewfSGn/LJ888KIfW/r78s1zKFzVufCb9NvY4whGFIjZGQCtdVCwSPnEsm2LvkUvbbaB/7qzcHgn3zxNvzimU9JCa3U+upi2KOt9GyaMdpHhjbfzbcmtRmgCY0Nuodedwvhqh430BM7ihFhJXLlwCWEaqw/0B/waQinEN3LGSSIhxlS/Eow7fYXBarIGj2f1JhG2OYnpkJRI6OjPLI49scEQ7h2urGD6/WRvj5A5uCmr7i5DV0LuxwTrPInPrcls8/FVXKqSiJTlfrAhVARlL33n0Wwo6gaqUCWGYdKg0WngEfnsBg2+HGGA6PHqajoz1fCxATmV0dw4iiaMUoWQXqTgP+3404bwFJXeZic/Z6Nhpq7VWOlBBFNY1/pqd7ET3diwgZkktRrb07LUIL0s/h6ew84nnjbOEboSEVMfWlVG5kWXZkpyfw8lNOALUMfmhX7+yawH4j3pQ57aTjZ2Nc+Flbczz/YXMowfddDLAgP3Ix/5FErjhsWjrJTE/P4KX7+2VlVSDeYUaEctWfRrEjjv31KIBNsfOK0KDMiGjexJ/HWFTtZ7qS5WHJmKCammX4pNsTcKTtrKAHPiVT+6ygSLz7PEemuVRmb7w8r+Eq7BSoqg+081CEHvp58qGvc+obLuKG+x4kyxRjhJuvOH7uUjUqXmIbt7i4kz4RfYW9gYgJN9z3AFW1afOvNn4KMQmvX/tJDmTd86PfkpwZVUw9DQERYejAbv7r21eCKvd844MArHUtsbXrf1BUZ0f6uu/9PBRERYBxi0yCql9x/yZKg0MAvOc7P/RTEWD88AiV8kx9dYzdrZ5JBS17NYuRajUlqtXcFnPCfarrKros4ye3X8Hk9Awbv3YJr//EXbzzWxsRgcvufxQQzl3UQS7IHNtDfqubPA/IVHnkyedQYMPQCAhcfv8mylNlEOHgooU8/PnzaG5qzFETaJEBPHiJ4plgk6vxqtWQAq8Uk9rPkBsB0EyJ7je+CDXQ3JpaXckU34VTlOHeSV5zzXoe/sS7MUZY0GoPVhzzmsVoZiV/uG+KqeEKG4bskZaXGrhy7ZtRtX5jyeJFjhGDoWkC8G+DIyFxaulqpGOla7hkcO95b8e7MhBe+6n1pK9axapVbUyMlGntbGBitExzWwIZTE2WqU4DD25nXBcHFjharAkENkZjbGCa8f5ppsYqTB2uMD1eZWq8wuR4hdKOcSpTGcYIZ3z+uyAmr9CM+L1WktT2GdSlwMG5h3/FVYs9Agnwxg7YrpBpSDAmidpiVmyVKWVi2EaciZEZACYPV5gcqzB2aIaJ4ek5zVuF5lREstCk1ogIselmHHM9bu1LWxjrnwLg0c9+0OqEu3nveWcH6bzh+g20djcFfct2T4VuroiEqKD2bFyw+9aeptAZUlV+eeU57rfQ0tETVZ95zhEPnyr7QtKvV2SCrQnTGHmAhqzfStTHd7VH3tz6FF11FFOltpb0fsX/EnYtauO6u392VGe7p6uNBPL1fRkoXu1jGjxhcVnsaxETQrCP8O3VQwxLVw4Xrab+TIBHv8nA1rOn0PKziEDTIhMx24UtFQa1nMPBha1AcFwA5V8bOxN6Ozspj89dfDW0Jf7AwixCY4C+QyACDy1+Nki5e4XNpa1VW3ymW+xaL9m6gAWZa02BV+dyKlA4GGEqWnQJOVXBDmziZNtd1a9+hL1vvRBVZfUJJ7FwyXFBo354yTsQgbfdfA8/vvRs3nbTPaDQ2JbS1B6RGqQrTB8u8+NL3hGWBli84sUoMNi3nR3PbGbNiaey45nNrPjPbzj1hu6ViV1XjHdBFkcH/7m3jnPaf+SbqTb1lhYT215BaH5Tz232hTLUq52buOetF/rYyO4dTzl6il3bHzmCULW9OD/HuD8Bd1yJ5o4G8nOFxXyha/kJAOx4+kkUpfesi5yfsHhKkvtzEcEk+c6UCiSRmbqQXEnt1n5uW2ki9L79o9gK0bB65/eQvj0gwq7XXWZDGEL7vi+x/czzaTJJKHY84vHwjCh0tvy02rkmZ1xcHs1yGZIfxNj5lvdikoSx7i4EZfXDNwS/kK04ln2v/Qtr3gLpvV+juzJErzQ7ZMSZgIO7RAb52e1XUK5k+FhrenfPSmAUZfubzgeF6ckpVqxYVmhVqaO2Z/nqvMPhw6T48FYsmf35YlAWLTk2iGmotJ+G9e+n/Lf2TEFPT0+UJhv6+vrsd4ff7tMv59gHv2jX3LMTjsm5Xq568/UoacMsn6NqT1j7ZCVieu7g1BOiLFux3GmAJSi9/UJHoDDzri8WMrK73vPGUBNsefTZcMw2MYbXvuFlgRE5o2FRzzEgQsMdH7AXz7yqYBreNAcGhujuXoQvawialI9br34nF31uY6BHsSdEQm6UKbz5/C/x5C9uQV2dLx/6EcYRt7y0G3uSU2lu3WtPgZRKxDBW+krTHWuPzUskZke0cRrNMVHCIVFu4pEeGh4mjgZrXnQiiNDRtdQ/gXn5D8M6qwb3Be3sXNhFJft+yCMM0ph6dKwzpFh9uVXVcVp9r7qmZicQqvmpBlWmxoaJ9I2J4TGr5t7JeWah9hi8g7VgdMAxyM5rqwmDOcPjS1FSVJPZxhlmapzR255gfPRKMSJs+dWdsw41BALdX3x9cU9PYWHvDCU1OWd9FI2OhSjWM6vkzC2cAvdz1IdlCd69GB2KjjRci5gQV4uZl4cLD8EEljeMS1WLrSlVZbK0OwAaKe0N9xb2rAJg4MBOFnZ2hrA1WcoCWu0Ll0U4CS2dvQHWgtamgh3Ho71reUjMEGGiv+r2zaCzoyMQt2LNH4QIM3Jot6PE0Oo6zzE/UGFifIzECMe1TvsFZwzYc0aNiWHbw+uL7PIePGKIRyqomualZxabhiGXYgEbDZKcPWbNhGB2jpDosb6dW8AlQp1LVhNrW0yCQxlV5d5vfMjxT8nscSTrnKqqnHrG+9zs3E5jKD5ZCfW7grqXIBBh8feuDc/UdmwLv47SwajNAbzD9P7Iq7cYYcWaU+w9hZFDe7BVad6WC2WK+98fxff3BJLU1uEZqRFmKsrh/j2MjY4GznctPT6QsHjlSwJaM5PjKLCgfaGTgjD1vnU0f+uqnJKYMLw9z3GmWJW21uaayTHzckG0L+xxxCijAwdpbm1HERYuOy48PDMxFuLE0MFdxInIWR+40R3atBgY0Jn27sVMzlRJTCSFQEAcxmYT1drWFdHqHZhLTDT3B0GhveZo7PRsZyloRtRItc/7RCeCATS1tM3CsXYUfZrFp6oKTR0khuE0U92UpMmaptQYxar5vt25s5uYmOSY409i346nWHPyK9m57bFw75jjTmT/7qcDqgu7e9i8R0Mpu6R3V5jb0tLEypUrAxN3bd0TSmkRGB8Zc3ISRgf78OEzU6V3fy7DhQd76V6ynIFDfUWhCBz/0leyY+umcG3lcTZH2L97LyuPXRUYbICW5lQzsq1puTr926bGhnOqanv82373ZG7zDtDeHVsREbZv2VTg7t6dT4XCSFUZKh0Kz+TvChLsTrxqR3E5vg+4atWR6+Dmb6VYKZYO9gb8/EuZosLObY8XGrF7d2xjyCVq+/fszU0OaG/vyMrl6QdMZab8MxXZ8fEvfltv++y7ibG64OrvBtXMsiprL7mJtZfchGrGuy692U1z7wxpxtqLv+okZx3T2R+4kYmJSSYnJ/mzv1mHZlmYb/cO7N9n7ngAEbj4nzZy8We/T1atMDIyyvDwCKOjY4i4DXyfI9iswcHJ0Czj7Iu+QpZV7T3N+MuL/yXnrvv02e2V19+plWp5y8zMzKOybt26pLlj+Z83pslHVJPXf/nj7w31gaBUM5sg2RaTtc0sJIT5m7s+J/ehy7e2a63Tq3JiDFXXEjNOkg2Joar5W6SKOwShxefnijDBX4iEGkMc/cZIeOP0Y9ffWa1k1YfK09PrBg/u+LEI8JZLL5U3vfhlr+7p6vrXhqaWE7b+7rdy3ec/hUkarNRqiChUOHOOGjdeuM4R7tUxAuVzrZefSNVqmY/942c45dTTtDozsbP/0MDfbfr1r39x9923kypwek+PpE08OTYx+eGWjKtWHnvsmVdc9QkkSZkcHyckGOptKLdz266zb5Rb9ZManGJuFdOiHH/n80MNouEl61y6UgRTkHu8ThxerfSTxLBixXJmZmbun5iYul5azSMnn7xaVDWbJcMbb/n2jQta295jhKpJkgbIAiY5KW4zy9cVJo/noT8p2IRK3YdD2pbj+SHoUEN4InxYZLaqezPzvMrfV5SCbomIGHFdAoVqRlk0S8amDn/nQxf+9YdjmP8L25h88jy6oKQAAAAASUVORK5CYII=', 87, 25],
+    ['data:image/png;base64,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', 74, 37],
+    ['data:image/png;base64,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', 92, 48],
+    ['data:image/png;base64,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', 79, 58],
+    ['data:image/png;base64,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', 69, 68]
+  ], mh = '';
+  for (var i = 0; i < M.length; i++) {
+    mh += '<img src="' + M[i][0] + '" alt="" style="left:' + M[i][1] + '%;top:' +
+          M[i][2] + '%;animation-delay:' + (reduce ? 0 : (0.70 + i * 0.07).toFixed(2)) + 's">';
+  }
+  marks.innerHTML = mh;
+})();
+</script>
+</body>
+</html>

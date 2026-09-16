@@ -7,7 +7,7 @@ import { Reveal } from "./Reveal.jsx";
    Deliberately distinct from the four shipped builds — each project gets
    its own art-directed stage instead of the standard browser+phone pair,
    every card carries a visible WIP status, and links say "Preview", not
-   "Live site". No repositories are linked until each project ships. */
+   "Live site". Repository links appear as each codebase goes public. */
 
 function PreviewIcon() {
   return (
@@ -109,7 +109,7 @@ export default function InProgress() {
       <div className="wip-grid">
         {wip.map((p) => (
           <Reveal as="article" key={p.id} className={`wip-card wip-card--${p.mood.replace("wip-", "")}`}>
-            <div className="wip-status" role="status">
+            <div className="wip-status">
               <span className="wip-badge">Work in progress</span>
               <span className="wip-status-text">{p.status}</span>
             </div>
@@ -126,16 +126,30 @@ export default function InProgress() {
                   <li key={t}>{t}</li>
                 ))}
               </ul>
-              <a
-                className="live-link wip-link"
-                href={p.liveIsInternal ? asset(p.live) : p.live}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={p.liveLabel}
-              >
-                Preview the work in progress
-                <PreviewIcon />
-              </a>
+              <div className="wip-actions">
+                <a
+                  className="live-link wip-link"
+                  href={p.liveIsInternal ? asset(p.live) : p.live}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={p.liveLabel}
+                >
+                  Preview the work in progress
+                  <PreviewIcon />
+                </a>
+                {p.repo && (
+                  <a
+                    className="live-link wip-link wip-link--repo"
+                    href={p.repo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={p.repoLabel}
+                  >
+                    Code
+                    <PreviewIcon />
+                  </a>
+                )}
+              </div>
             </div>
           </Reveal>
         ))}

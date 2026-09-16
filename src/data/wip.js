@@ -1,7 +1,6 @@
 /* Work currently in progress. These are real client and product builds that
    are live as previews but not finished: descriptions state only what already
-   exists in the deployed preview. No repositories are linked yet — code goes
-   public when each project ships. Screenshots are real captures (2026-08). */
+   exists in the deployed preview. Repositories are linked as they go public. Screenshots are real captures (2026-08). */
 
 export const wip = [
   {
@@ -15,6 +14,8 @@ export const wip = [
     tags: ["EN/ES i18n", "Custom static build", "Zero dependencies", "Netlify"],
     live: "https://mireyasportfolioworkinprogress.netlify.app/en/",
     liveLabel: "Preview Mireya's portfolio (work in progress, opens in a new tab)",
+    repo: "https://github.com/juanjbarreraj/Mireya-sPortfolio",
+    repoLabel: "View the Mireya portfolio repository on GitHub",
     mood: "wip-art",
   },
   {
@@ -28,6 +29,8 @@ export const wip = [
     tags: ["React", "Vite", "IndexedDB demo", "PDF + Excel generation", "Spanish-first"],
     live: "https://juanjbarreraj.github.io/trackeo-demo/",
     liveLabel: "Preview the Trackeo demo (work in progress, opens in a new tab)",
+    repo: "https://github.com/juanjbarreraj/Trackeo",
+    repoLabel: "View the Trackeo repository on GitHub",
     mood: "wip-track",
   },
   {
@@ -42,6 +45,8 @@ export const wip = [
     live: "work/el-globo/",
     liveIsInternal: true,
     liveLabel: "Preview The Art of War and Peace experience (work in progress, opens in a new tab)",
+    repo: "https://github.com/JuanBarrera0305/MyFirstPortfolio/blob/main/public/work/el-globo/index.html",
+    repoLabel: "View the single-file source on GitHub",
     mood: "wip-globe",
   },
 ];

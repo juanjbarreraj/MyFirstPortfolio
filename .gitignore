@@ -8,3 +8,7 @@ Thumbs.db
 # build
 node_modules/
 dist/
+
+# local scratch
+.git-commit-msg.txt
+_transfer/

@@ -46,27 +46,33 @@ const STAGES = {
     <div className="stage stage--om">
       <Browser
         src={asset("assets/work/openminds-home.jpg")}
-        alt="Sign-in screen of the live OpenMinds tutoring platform, with Google and email authentication"
-        domain="open-minds-studios…base44.app"
+        alt="Landing page of the live Open Minds Studios site, with student and tutor portal logins"
+        domain="openmindsstudios.com"
       />
       <Phone
         src={asset("assets/work/openminds-mobile.jpg")}
-        alt="OpenMinds on a phone-sized screen"
+        alt="Open Minds Studios on a phone-sized screen"
       />
       <span className="stage-accent" aria-hidden="true"></span>
     </div>
   ),
-  picklers: () => (
-    <div className="stage stage--pk">
+  serverpanel: () => (
+    <div className="stage stage--sp">
       <Browser
-        src={asset("assets/work/picklers-home.jpg")}
-        alt="Homepage of the live Picklers match-results platform"
-        domain="pickler-court-connect…base44.app"
+        src={asset("assets/work/serverpanel-case.jpg")}
+        alt="Opening of the Califree Control Panel case study: a dark chunk-grid world map behind the system's headline numbers"
+        domain="juanjbarreraj.com/work/califree"
       />
-      <Phone
-        src={asset("assets/work/picklers-mobile.jpg")}
-        alt="Picklers on a phone-sized screen"
-      />
+      <figure className="stage-card" aria-hidden="true">
+        <img
+          src={asset("assets/work/serverpanel-arch.jpg")}
+          alt=""
+          width={1440}
+          height={900}
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
       <span className="stage-accent" aria-hidden="true"></span>
     </div>
   ),

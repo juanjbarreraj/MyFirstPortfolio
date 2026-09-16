@@ -10,6 +10,7 @@ import {
 import { projects } from "../data/projects.js";
 import ProjectMedia from "./ProjectMedia.jsx";
 import { Reveal } from "./Reveal.jsx";
+import { asset } from "../lib/asset.js";
 
 /* ============================== PROJECTS ==============================
    "Horizontal Journey": on desktop the section pins and vertical scroll
@@ -37,19 +38,35 @@ function LiveIcon() {
 function ChapterActions({ project, onFocusJump }) {
   return (
     <div className="chapter-actions">
-      <a
-        className="gh-link"
-        href={project.repo}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={project.repoLabel}
-        onFocus={onFocusJump}
-      >
-        <GhIcon />
-        <span className="gh-label" aria-hidden="true">
-          Repository
-        </span>
-      </a>
+      {project.repo && (
+        <a
+          className="gh-link"
+          href={project.repo}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={project.repoLabel}
+          onFocus={onFocusJump}
+        >
+          <GhIcon />
+          <span className="gh-label" aria-hidden="true">
+            Repository
+          </span>
+        </a>
+      )}
+      {project.caseStudy && (
+        <a
+          className="live-link"
+          href={asset(project.caseStudy)}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={project.caseStudyLabel}
+          onFocus={onFocusJump}
+        >
+          Case study
+          <LiveIcon />
+          <span className="sr-only">(opens in a new tab)</span>
+        </a>
+      )}
       {project.live && (
         <a
           className="live-link"
@@ -218,7 +235,7 @@ function HorizontalJourney() {
 
         <nav className="journey-progress" aria-label="Project progress">
           <span className="journey-count" aria-hidden="true">
-            01·04
+            01·{String(projects.length).padStart(2, "0")}
           </span>
           <div className="journey-bar" aria-hidden="true">
             <motion.span className="journey-bar-fill" style={{ scaleX: scrollYProgress }} />
