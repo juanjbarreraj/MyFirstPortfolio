@@ -27,6 +27,20 @@ function Phone({ src, alt, width = 390, height = 844 }) {
   );
 }
 
+/* A phone frame whose screen slowly crawls through a full-page capture of the
+   live mobile site, so the stage reads as the site being browsed. Purely
+   decorative motion: it pauses on hover and turns off under
+   prefers-reduced-motion (see .stage-phone--live in main.css). */
+function LivePhone({ src, alt, width, height }) {
+  return (
+    <figure className="stage-phone stage-phone--live">
+      <div className="phone-scroll">
+        <img src={src} alt={alt} width={width} height={height} loading="lazy" decoding="async" />
+      </div>
+    </figure>
+  );
+}
+
 const STAGES = {
   pupoclock: () => (
     <div className="stage stage--pup">
@@ -35,9 +49,11 @@ const STAGES = {
         alt="Homepage of the live Pup O’Clock website"
         domain="pupoclock.com"
       />
-      <Phone
-        src={asset("assets/work/pupoclock-mobile.jpg")}
-        alt="Pup O’Clock on a phone-sized screen"
+      <LivePhone
+        src={asset("assets/work/pupoclock-mobile-full.jpg")}
+        alt="The full Pup O’Clock mobile site, scrolling slowly from top to bottom"
+        width={420}
+        height={9242}
       />
       <span className="stage-accent" aria-hidden="true"></span>
     </div>
@@ -46,7 +62,7 @@ const STAGES = {
     <div className="stage stage--om">
       <Browser
         src={asset("assets/work/openminds-home.jpg")}
-        alt="Landing page of the live Open Minds Studios site, with student and tutor portal logins"
+        alt="Student Portal page of the live Open Minds Studios site, showing the demo student dashboard with progress stats and upcoming sessions"
         domain="openmindsstudios.com"
       />
       <Phone
@@ -59,16 +75,18 @@ const STAGES = {
   serverpanel: () => (
     <div className="stage stage--sp">
       <Browser
-        src={asset("assets/work/serverpanel-case.jpg")}
-        alt="Opening of the Califree Control Panel case study: a dark chunk-grid world map behind the system's headline numbers"
-        domain="juanjbarreraj.com/work/califree"
+        src={asset("assets/work/serverpanel-panel.jpg")}
+        alt="Home view of the live Califree control panel: server online, tick-time and memory charts, and the join info card"
+        domain="califree.net"
       />
+      {/* Secondary card: the player book view. Placeholder slot for a
+          recorded video walkthrough of the panel, coming later. */}
       <figure className="stage-card" aria-hidden="true">
         <img
-          src={asset("assets/work/serverpanel-arch.jpg")}
+          src={asset("assets/work/serverpanel-players.jpg")}
           alt=""
           width={1440}
-          height={900}
+          height={828}
           loading="lazy"
           decoding="async"
         />

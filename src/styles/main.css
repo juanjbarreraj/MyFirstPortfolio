@@ -1111,6 +1111,45 @@ p {
   object-position: top center;
 }
 
+/* live phone: the screen crawls through a full-page capture of the mobile
+   site (420x9242), reading as a slow scroll. Hover pauses it; reduced
+   motion disables it (the global reduce block would otherwise turn the
+   infinite alternate loop into flicker, so it is opted out explicitly). */
+.stage-phone--live .phone-scroll {
+  aspect-ratio: 390 / 760;
+  overflow: hidden;
+}
+
+.stage-phone--live img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: auto;
+  object-fit: unset;
+  display: block;
+  animation: phone-crawl 38s ease-in-out 1.2s infinite alternate;
+  will-change: transform;
+}
+
+.stage-phone--live:hover img {
+  animation-play-state: paused;
+}
+
+@keyframes phone-crawl {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    /* window shows 1.9487/22.005 of the capture: stop where the footer fills it */
+    transform: translateY(-91.14%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage-phone--live img {
+    animation: none !important;
+  }
+}
+
 .stage-accent {
   position: absolute;
   display: block;
