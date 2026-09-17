@@ -45,7 +45,7 @@ export const wip = [
     live: "work/el-globo/",
     liveIsInternal: true,
     liveLabel: "Preview The Art of War and Peace experience (work in progress, opens in a new tab)",
-    repo: "https://github.com/JuanBarrera0305/MyFirstPortfolio/blob/main/public/work/el-globo/index.html",
+    repo: "https://github.com/juanjbarreraj/MyFirstPortfolio/blob/main/public/work/el-globo/index.html",
     repoLabel: "View the single-file source on GitHub",
     mood: "wip-globe",
   },
