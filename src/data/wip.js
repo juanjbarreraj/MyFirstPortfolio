@@ -42,7 +42,7 @@ export const wip = [
       "Digital companion to an installation by Pittsburgh sculptor Lorrie Anne Minicozzi: a custom WebGL globe, written from scratch with no libraries, carrying 44 hand-drawn figures you can rotate and open, each with the artist's own story for it.",
     status: "Experience built · awaiting photography of the finished sculpture",
     tags: ["WebGL from scratch", "Single-file build", "44 interactive figures", "Art direction"],
-    live: "work/el-globo/",
+    live: "work/lorrie-minicozzi/",
     liveIsInternal: true,
     liveLabel: "Preview The Art of War and Peace experience (work in progress, opens in a new tab)",
     repo: "https://github.com/juanjbarreraj/MyFirstPortfolio/blob/main/public/work/el-globo/index.html",
