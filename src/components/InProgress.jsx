@@ -1,6 +1,5 @@
 import { asset } from "../lib/asset.js";
 import { wip } from "../data/wip.js";
-import { Reveal } from "./Reveal.jsx";
 
 /* ============================ IN PROGRESS ============================
    "The Bench": work that is real and live as a preview, but not finished.
@@ -8,14 +7,6 @@ import { Reveal } from "./Reveal.jsx";
    its own art-directed stage instead of the standard browser+phone pair,
    every card carries a visible WIP status, and links say "Preview", not
    "Live site". Repository links appear as each codebase goes public. */
-
-function PreviewIcon() {
-  return (
-    <svg className="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" />
-    </svg>
-  );
-}
 
 function WipFrame({ src, alt, label }) {
   return (
@@ -90,11 +81,7 @@ const STAGES = {
 export default function InProgress() {
   return (
     <section className="section section--band wip" id="in-progress" aria-labelledby="wip-title">
-      <Reveal as="header" className="section-head">
-        <p className="kicker">
-          <span className="kicker-dot kicker-dot--wip" aria-hidden="true"></span>
-          In the studio
-        </p>
+      <header className="section-head">
         <h2 id="wip-title">
           Three builds,
           <br />
@@ -104,11 +91,11 @@ export default function InProgress() {
           Not finished, not hidden. These are live previews of work on the bench right now:
           what you see is real, and what is missing is labeled.
         </p>
-      </Reveal>
+      </header>
 
       <div className="wip-grid">
         {wip.map((p) => (
-          <Reveal as="article" key={p.id} className={`wip-card wip-card--${p.mood.replace("wip-", "")}`}>
+          <article key={p.id} className={`wip-card wip-card--${p.mood.replace("wip-", "")}`}>
             <div className="wip-status">
               <span className="wip-badge">Work in progress</span>
               <span className="wip-status-text">{p.status}</span>
@@ -135,7 +122,6 @@ export default function InProgress() {
                   aria-label={p.liveLabel}
                 >
                   Preview the work in progress
-                  <PreviewIcon />
                 </a>
                 {p.repo && (
                   <a
@@ -146,12 +132,11 @@ export default function InProgress() {
                     aria-label={p.repoLabel}
                   >
                     Code
-                    <PreviewIcon />
                   </a>
                 )}
               </div>
             </div>
-          </Reveal>
+          </article>
         ))}
       </div>
     </section>

@@ -6,7 +6,7 @@
 export const projects = [
   {
     id: "pupoclock",
-    index: "01",
+    index: "1",
     name: "Pup O’Clock",
     category: "Consumer subscription product",
     positioning: "A subscription box for kids and dogs.",
@@ -20,7 +20,7 @@ export const projects = [
   },
   {
     id: "openminds",
-    index: "02",
+    index: "2",
     name: "OpenMinds",
     category: "Full-stack platform",
     positioning: "Tutoring, organized end to end.",
@@ -34,7 +34,7 @@ export const projects = [
   },
   {
     id: "serverpanel",
-    index: "03",
+    index: "3",
     name: "Califree Control Panel",
     category: "Self-hosted platform",
     positioning: "A game server that runs itself.",
@@ -50,7 +50,7 @@ export const projects = [
   },
   {
     id: "efficiency",
-    index: "04",
+    index: "4",
     name: "Efficiency Appliance LLC",
     category: "Production client site",
     positioning: "A small business, launched. My first ever.",

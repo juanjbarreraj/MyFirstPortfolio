@@ -5,7 +5,8 @@
      30%  Beacon Gray   #CDD7DE — cards, alternate bands, containers, borders
      10%  Evening Blue  #004E93 — buttons, links, labels, icons, focus, details
      micro Desert Sunset #D68B1A — active indicators, hover lines, tiny accents
-   Type: Space Grotesk display · Inter body · JetBrains Mono labels.
+   Type: Archivo variable, one family with range: expanded for display,
+   normal width for text, tabular numerals for counters. Mono only in the intro.
    All contrast pairs verified ≥ 4.5:1 (normal) / 3:1 (large + UI).
 
    1. Tokens        4. Hero            7. Education & Leadership
@@ -39,9 +40,10 @@
   --blue-soft: rgba(0, 78, 147, 0.09);
   --on-blue: #ffffff;
 
-  --font-display: "Space Grotesk", "Inter", -apple-system, sans-serif;
-  --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-display: "Archivo", system-ui, -apple-system, sans-serif;
+  --font-body: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, monospace; /* intro terminal + skip link only */
+  --stretch-display: 118%;
 
   --step--1: clamp(0.78rem, 0.76rem + 0.1vw, 0.84rem);
   --step-0: clamp(1rem, 0.97rem + 0.16vw, 1.08rem);
@@ -126,11 +128,18 @@ h1,
 h2,
 h3 {
   font-family: var(--font-display);
-  font-weight: 600;
+  font-stretch: var(--stretch-display);
+  font-weight: 640;
   line-height: 1.06;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.015em;
   color: var(--ink);
   text-wrap: balance;
+}
+
+a,
+button {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 p {
@@ -178,7 +187,6 @@ p {
   padding: 0.7rem 1.1rem;
   background: var(--blue);
   color: var(--on-blue);
-  font-family: var(--font-mono);
   font-size: var(--step--1);
   font-weight: 500;
   border-radius: 8px;
@@ -192,35 +200,10 @@ p {
 
 /* 3. Primitives ------------------------------------------------------------ */
 
-.kicker {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-family: var(--font-mono);
-  font-size: var(--step--1);
+.lead-in {
+  font-size: var(--step-0);
   font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
   color: var(--blue);
-}
-
-.kicker-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--blue);
-  flex: none;
-  animation: pulse 2.6s var(--ease-out) infinite;
-}
-
-@keyframes pulse {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 rgba(0, 78, 147, 0.4);
-  }
-  55% {
-    box-shadow: 0 0 0 9px rgba(0, 78, 147, 0);
-  }
 }
 
 .btn {
@@ -230,16 +213,19 @@ p {
   gap: 0.55rem;
   min-height: 48px;
   padding: 0.85rem 1.5rem;
-  border-radius: 999px;
+  border-radius: 10px;
   border: 0;
-  font-family: var(--font-mono);
-  font-size: var(--step--1);
-  font-weight: 500;
-  letter-spacing: 0.04em;
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  font-weight: 560;
   cursor: pointer;
-  transition: transform var(--dur) var(--ease-out),
+  transition: transform 110ms var(--ease-out),
     background-color var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out),
     color var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+}
+
+.btn:active {
+  transform: scale(0.98);
 }
 
 .btn-primary {
@@ -249,8 +235,6 @@ p {
 
 .btn-primary:hover {
   background: var(--blue-deep);
-  box-shadow: 0 10px 28px rgba(0, 78, 147, 0.3);
-  transform: translateY(-2px);
 }
 
 .btn-ghost {
@@ -261,8 +245,7 @@ p {
 
 .btn-ghost:hover {
   border-color: var(--blue);
-  color: var(--blue);
-  transform: translateY(-2px);
+  color: var(--blue-deep);
 }
 
 .card {
@@ -305,22 +288,20 @@ p {
 }
 
 .tag-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-  margin-top: 1.25rem;
+  display: block;
+  margin-top: 1.1rem;
+  font-size: var(--step--1);
+  color: var(--muted);
+  max-width: 62ch;
+  line-height: 1.6;
 }
 
 .tag-row li {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--blue);
-  border: 1px solid rgba(0, 78, 147, 0.34);
-  background: rgba(246, 248, 247, 0.55);
-  border-radius: 999px;
-  padding: 0.34rem 0.7rem;
+  display: inline;
+}
+
+.tag-row li:not(:last-child)::after {
+  content: ", ";
 }
 
 /* 4. Header & hero --------------------------------------------------------- */
@@ -362,9 +343,9 @@ p {
   align-items: center;
   min-width: 150px;
   min-height: 44px;
-  font-family: var(--font-mono);
-  font-size: 0.95rem;
-  font-weight: 500;
+  font-size: 1rem;
+  font-weight: 600;
+  font-stretch: var(--stretch-display);
   color: var(--ink);
   margin-right: auto;
 }
@@ -380,13 +361,6 @@ p {
 .brand-prompt {
   color: var(--blue);
   font-weight: 700;
-}
-
-.brand-cursor {
-  width: 0.55em;
-  height: 1.05em;
-  background: var(--blue);
-  animation: blink 1.15s steps(1) infinite;
 }
 
 @keyframes blink {
@@ -449,10 +423,8 @@ p {
   align-items: center;
   min-height: 44px;
   padding: 0.55rem 0.85rem;
-  font-family: var(--font-mono);
-  font-size: var(--step--1);
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
+  font-size: var(--step-0);
+  font-weight: 500;
   color: var(--muted);
   border-radius: 8px;
   transition: color var(--dur) var(--ease-out);
@@ -714,34 +686,19 @@ p {
 
 .marquee-track {
   display: flex;
-  gap: 2.8rem;
-  width: max-content;
-  animation: marquee 36s linear infinite;
-}
-
-.marquee:hover .marquee-track {
-  animation-play-state: paused;
+  flex-wrap: wrap;
+  gap: 0.35rem 2.2rem;
+  justify-content: center;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
 }
 
 .marquee-track span {
-  font-family: var(--font-mono);
   font-size: var(--step--1);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-weight: 500;
   color: var(--ink-soft);
   white-space: nowrap;
-}
-
-.marquee-track span::after {
-  content: "·";
-  color: var(--blue);
-  margin-left: 2.8rem;
-}
-
-@keyframes marquee {
-  to {
-    transform: translateX(-50%);
-  }
 }
 
 /* 6. Projects — Horizontal Journey ----------------------------------------- */
@@ -806,7 +763,7 @@ p {
 }
 
 .journey-toc button span {
-  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
   font-size: 0.75rem;
   font-weight: 500;
   color: var(--sunset);
@@ -823,10 +780,8 @@ p {
   align-items: center;
   gap: 0.55rem;
   margin-top: 2.4rem;
-  font-family: var(--font-mono);
   font-size: var(--step--1);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-weight: 500;
   color: var(--muted);
 }
 
@@ -850,6 +805,7 @@ p {
 .chapter {
   flex: none;
   width: min(78vw, 1180px);
+  padding-left: clamp(1.1rem, 3vw, 2rem);
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
@@ -895,24 +851,15 @@ p {
 }
 
 .chapter-index {
-  font-family: var(--font-display);
-  font-size: clamp(3.6rem, 6.5vw, 6.4rem);
-  font-weight: 700;
-  line-height: 1;
-  color: transparent;
-  -webkit-text-stroke: 1.5px var(--line-strong);
-  transition: -webkit-text-stroke-color 0.5s var(--ease-out), color 0.5s var(--ease-out);
-}
-
-.chapter.is-active .chapter-index {
-  -webkit-text-stroke-color: var(--sunset);
+  font-size: var(--step-0);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
 }
 
 .chapter-category {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-size: var(--step--1);
+  font-weight: 500;
   color: var(--muted);
   margin-top: 1rem;
 }
@@ -944,35 +891,15 @@ p {
 }
 
 .chapter-tags li {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--blue);
-  border: 1px solid rgba(0, 78, 147, 0.34);
-  background: rgba(246, 248, 247, 0.55);
-  border-radius: 999px;
-  padding: 0.34rem 0.7rem;
+  display: inline;
+  font-size: var(--step--1);
+  color: var(--muted);
 }
 
-/* tags reveal in sequence when a chapter becomes active (desktop journey) */
-.chapter .chapter-tags li {
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.45s var(--ease-out), transform 0.45s var(--ease-out);
+.chapter-tags li:not(:last-child)::after {
+  content: ", ";
 }
 
-.chapter.is-active .chapter-tags li {
-  opacity: 1;
-  transform: none;
-}
-
-.chapter.is-active .chapter-tags li:nth-child(1) { transition-delay: 0.1s; }
-.chapter.is-active .chapter-tags li:nth-child(2) { transition-delay: 0.16s; }
-.chapter.is-active .chapter-tags li:nth-child(3) { transition-delay: 0.22s; }
-.chapter.is-active .chapter-tags li:nth-child(4) { transition-delay: 0.28s; }
-.chapter.is-active .chapter-tags li:nth-child(5) { transition-delay: 0.34s; }
-.chapter.is-active .chapter-tags li:nth-child(6) { transition-delay: 0.4s; }
 
 .chapter-actions {
   display: flex;
@@ -990,11 +917,10 @@ p {
   min-height: 46px;
   padding: 0.6rem 1.15rem;
   border: 1px solid var(--blue);
-  border-radius: 999px;
+  border-radius: 10px;
   cursor: pointer;
-  font-family: var(--font-mono);
-  font-size: var(--step--1);
-  letter-spacing: 0.05em;
+  font-size: var(--step-0);
+  font-weight: 500;
   color: var(--blue);
   transition: color var(--dur) var(--ease-out), background-color var(--dur) var(--ease-out),
     transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
@@ -1023,17 +949,21 @@ p {
   align-items: center;
   gap: 0.45rem;
   min-height: 46px;
-  padding: 0.6rem 0.9rem;
-  font-family: var(--font-mono);
-  font-size: var(--step--1);
-  letter-spacing: 0.05em;
-  color: var(--muted);
-  border-radius: 999px;
-  transition: color var(--dur) var(--ease-out);
+  padding: 0.6rem 0.4rem;
+  font-size: var(--step-0);
+  font-weight: 500;
+  color: var(--ink-soft);
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 4px;
+  border-radius: 6px;
+  transition: color var(--dur) var(--ease-out),
+    text-decoration-color var(--dur) var(--ease-out);
 }
 
 .live-link:hover {
-  color: var(--blue);
+  color: var(--blue-deep);
+  text-decoration-color: var(--blue);
 }
 
 /* media stages */
@@ -1078,8 +1008,7 @@ p {
 }
 
 .stage-chrome span {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   color: var(--muted);
   margin-left: 8px;
   letter-spacing: 0.04em;
@@ -1264,7 +1193,7 @@ p {
 }
 
 .journey-count {
-  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
   font-size: 0.72rem;
   letter-spacing: 0.12em;
   color: var(--muted);
@@ -1297,9 +1226,8 @@ p {
   border: 1px solid transparent;
   border-radius: 10px;
   background: transparent;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
   color: var(--muted);
   cursor: pointer;
   transition: color var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out);
@@ -1333,11 +1261,6 @@ p {
   display: flex;
   align-items: baseline;
   gap: 1.1rem;
-}
-
-.vchapter .chapter-index {
-  font-size: clamp(2.6rem, 9vw, 4rem);
-  -webkit-text-stroke-color: var(--sunset);
 }
 
 .vchapter .chapter-category {
@@ -1379,44 +1302,14 @@ p {
     border-color var(--dur) var(--ease-out);
 }
 
-.edu-card::after {
-  content: "";
-  position: absolute;
-  right: -20px;
-  top: -20px;
-  width: 150px;
-  height: 150px;
-  background-image: radial-gradient(rgba(0, 78, 147, 0.22) 1.5px, transparent 1.5px);
-  background-size: 14px 14px;
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-.edu-card:hover,
-.lead-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-  border-color: rgba(0, 78, 147, 0.4);
-}
-
 .edu-level {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-size: var(--step--1);
+  font-weight: 500;
   color: var(--muted);
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 0.6rem;
-}
-
-.edu-status {
-  background: var(--blue);
-  color: var(--on-blue);
-  border-radius: 999px;
-  padding: 0.22rem 0.65rem;
-  letter-spacing: 0.1em;
 }
 
 .edu-title {
@@ -1425,9 +1318,8 @@ p {
 }
 
 .edu-meta {
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  letter-spacing: 0.05em;
+  font-size: var(--step--1);
+  font-weight: 500;
   color: var(--blue);
   margin-top: 0.55rem;
 }
@@ -1463,10 +1355,8 @@ p {
 }
 
 .lead-meta {
-  font-family: var(--font-mono);
-  font-size: 0.74rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-size: var(--step--1);
+  font-weight: 500;
   color: var(--blue);
   margin-top: 0.45rem;
 }
@@ -1551,28 +1441,25 @@ p {
   display: inline-flex;
   align-items: center;
   min-height: 46px;
-  padding: 0.6rem 1.2rem;
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  font-family: var(--font-mono);
-  font-size: var(--step--1);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  padding: 0.6rem 0.2rem;
+  font-size: var(--step-0);
+  font-weight: 500;
   color: var(--ink-soft);
-  background: rgba(246, 248, 247, 0.5);
-  transition: color var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out),
-    transform var(--dur) var(--ease-out);
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 4px;
+  border-radius: 6px;
+  transition: color var(--dur) var(--ease-out),
+    text-decoration-color var(--dur) var(--ease-out);
 }
 
 .contact-links a:hover {
-  color: var(--blue);
-  border-color: var(--blue);
-  transform: translateY(-2px);
+  color: var(--blue-deep);
+  text-decoration-color: var(--blue);
 }
 
 .contact-note {
   margin-top: 1.8rem;
-  font-family: var(--font-mono);
   font-size: var(--step--1);
   color: var(--muted);
 }
@@ -1593,8 +1480,9 @@ p {
 }
 
 .foot-mark {
-  font-family: var(--font-mono);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-stretch: var(--stretch-display);
   color: var(--ink);
 }
 
@@ -1604,17 +1492,14 @@ p {
 }
 
 .foot-colophon {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.04em;
+  font-size: var(--step--1);
   color: var(--muted);
   max-width: 52ch;
 }
 
 .foot-copy {
   margin-left: auto;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: var(--step--1);
   color: var(--muted);
 }
 
@@ -1795,11 +1680,7 @@ p {
     width: auto;
   }
 
-  .chapter .chapter-tags li {
-    opacity: 1;
-    transform: none;
   }
-}
 
 @media print {
   .marquee,
@@ -1823,21 +1704,6 @@ p {
    borders, a visible WIP status strip, art-directed stages per project,
    and "Preview" links instead of Live site + Repository. */
 
-.kicker-dot--wip {
-  background: var(--sunset);
-  animation-name: pulse-wip;
-}
-
-@keyframes pulse-wip {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 rgba(214, 139, 26, 0.45);
-  }
-  55% {
-    box-shadow: 0 0 0 9px rgba(214, 139, 26, 0);
-  }
-}
-
 .wip-grid {
   max-width: var(--container);
   margin: 0 auto;
@@ -1852,18 +1718,12 @@ p {
   display: flex;
   flex-direction: column;
   background: var(--panel);
-  border: 1px dashed var(--line-strong);
+  border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   padding: clamp(1rem, 2vw, 1.4rem);
   box-shadow: var(--shadow-sm);
   transition: transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out),
     border-color var(--dur) var(--ease-out);
-}
-
-.wip-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--sunset);
 }
 
 .wip-status {
@@ -1875,23 +1735,17 @@ p {
 }
 
 .wip-badge {
-  font-family: var(--font-mono);
-  font-size: 0.66rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-size: var(--step--1);
+  font-weight: 600;
   color: #7c5510;
   background: var(--sunset-soft);
-  border: 1px solid rgba(214, 139, 26, 0.45);
-  border-radius: 999px;
-  padding: 0.32rem 0.7rem;
+  border-radius: 6px;
+  padding: 0.28rem 0.6rem;
   white-space: nowrap;
 }
 
 .wip-status-text {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.04em;
+  font-size: var(--step--1);
   color: var(--muted);
 }
 
@@ -1924,10 +1778,8 @@ p {
   position: absolute;
   top: 8px;
   left: 8px;
-  font-family: var(--font-mono);
-  font-size: 0.64rem;
-  font-weight: 500;
-  letter-spacing: 0.12em;
+  font-size: 0.72rem;
+  font-weight: 600;
   color: var(--on-blue);
   background: var(--blue);
   border-radius: 6px;

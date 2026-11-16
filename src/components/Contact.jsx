@@ -1,29 +1,21 @@
-import { Reveal } from "./Reveal.jsx";
 import { asset } from "../lib/asset.js";
 
 export default function Contact() {
   return (
     <section className="section section--band" id="contact" aria-labelledby="contact-title">
-      <Reveal as="header" className="section-head">
-        <p className="kicker">
-          <span className="kicker-dot" aria-hidden="true"></span>
-          Contact
-        </p>
+      <header className="section-head">
         <h2 id="contact-title">
           Have an idea?
           <br />
           Let’s make it run.
         </h2>
-      </Reveal>
+      </header>
 
-      <Reveal className="contact-body" delay={0.1}>
+      <div className="contact-body">
         <a className="contact-mail" href="mailto:juanjbarreraj@gmail.com">
           juanjbarreraj
           <wbr />
           @gmail.com
-          <svg className="mail-arrow" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-            <path d="M6 18 18 6m0 0H8m10 0v10" />
-          </svg>
         </a>
 
         <ul className="contact-links">
@@ -49,9 +41,9 @@ export default function Contact() {
         </ul>
 
         <p className="contact-note">
-          Open to full-time roles and freelance builds · usually replies within a day.
+          Open to full-time roles and freelance builds. I usually reply within a day.
         </p>
-      </Reveal>
+      </div>
     </section>
   );
 }

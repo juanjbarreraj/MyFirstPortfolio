@@ -42,14 +42,13 @@ export default function Hero() {
       <div className="hero-inner">
         <div className="hero-copy">
           <motion.p
-            className="kicker"
+            className="lead-in"
             variants={softRise}
             custom={0}
             initial={initial}
             animate={animate}
           >
-            <span className="kicker-dot" aria-hidden="true"></span>
-            Full-stack software developer · Pittsburgh, PA
+            Full-stack software developer in Pittsburgh, PA
           </motion.p>
 
           <h1 className="hero-title">

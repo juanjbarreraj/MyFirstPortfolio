@@ -53,9 +53,7 @@ export default function Header() {
       <nav className="nav" aria-label="Primary">
         <a className="brand" href="#top" aria-label="Juan Barrera, home">
           <span className="brand-word" aria-hidden="true">
-            <span className="brand-prompt">&#10095;</span>
-            <span className="brand-name">juanbarrera</span>
-            <span className="brand-cursor"></span>
+            <span className="brand-name">Juan Barrera</span>
           </span>
           <span className="brand-logo" aria-hidden="true">
             {logoOk ? (

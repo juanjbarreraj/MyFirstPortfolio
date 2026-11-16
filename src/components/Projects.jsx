@@ -9,7 +9,6 @@ import {
 } from "framer-motion";
 import { projects } from "../data/projects.js";
 import ProjectMedia from "./ProjectMedia.jsx";
-import { Reveal } from "./Reveal.jsx";
 import { asset } from "../lib/asset.js";
 
 /* ============================== PROJECTS ==============================
@@ -23,14 +22,6 @@ function GhIcon() {
   return (
     <svg className="gh-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
       <path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.03a9.56 9.56 0 0 1 5 0c1.91-1.3 2.75-1.03 2.75-1.03.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 22 12 10 10 0 0 0 12 2Z" />
-    </svg>
-  );
-}
-
-function LiveIcon() {
-  return (
-    <svg className="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" />
     </svg>
   );
 }
@@ -63,7 +54,6 @@ function ChapterActions({ project, onFocusJump }) {
           onFocus={onFocusJump}
         >
           Case study
-          <LiveIcon />
           <span className="sr-only">(opens in a new tab)</span>
         </a>
       )}
@@ -76,7 +66,6 @@ function ChapterActions({ project, onFocusJump }) {
           onFocus={onFocusJump}
         >
           Live site
-          <LiveIcon />
           <span className="sr-only">(opens in a new tab)</span>
         </a>
       )}
@@ -175,10 +164,6 @@ function HorizontalJourney() {
       <div className="journey-viewport">
         <motion.div className="journey-track" ref={trackRef} style={{ x }}>
           <header className="journey-intro">
-            <p className="kicker">
-              <span className="kicker-dot" aria-hidden="true"></span>
-              Projects
-            </p>
             <h2 id="projects-title">
               Four builds,
               <br />
@@ -213,7 +198,7 @@ function HorizontalJourney() {
             >
               <div className="chapter-info">
                 <p className="chapter-index" aria-hidden="true">
-                  {p.index}
+                  {p.index} / {projects.length}
                 </p>
                 <p className="chapter-category">{p.category}</p>
                 <h3 className="chapter-name">{p.name}</h3>
@@ -235,7 +220,7 @@ function HorizontalJourney() {
 
         <nav className="journey-progress" aria-label="Project progress">
           <span className="journey-count" aria-hidden="true">
-            01·{String(projects.length).padStart(2, "0")}
+            1 / {projects.length}
           </span>
           <div className="journey-bar" aria-hidden="true">
             <motion.span className="journey-bar-fill" style={{ scaleX: scrollYProgress }} />
@@ -266,11 +251,7 @@ function HorizontalJourney() {
 function VerticalJourney() {
   return (
     <section className="section journey-vertical" id="projects" aria-labelledby="projects-title">
-      <Reveal as="header" className="section-head">
-        <p className="kicker">
-          <span className="kicker-dot" aria-hidden="true"></span>
-          Projects
-        </p>
+      <header className="section-head">
         <h2 id="projects-title">
           Four builds,
           <br />
@@ -280,14 +261,14 @@ function VerticalJourney() {
           Product thinking, interface design, back-end logic, and delivery: four different
           products for four different kinds of users.
         </p>
-      </Reveal>
+      </header>
 
       <div className="vchapters">
         {projects.map((p) => (
-          <Reveal as="article" key={p.id} className={`vchapter chapter--${p.mood}`}>
+          <article key={p.id} className={`vchapter chapter--${p.mood}`}>
             <div className="vchapter-head">
               <span className="chapter-index" aria-hidden="true">
-                {p.index}
+                {p.index} / {projects.length}
               </span>
               <div>
                 <p className="chapter-category">{p.category}</p>
@@ -305,7 +286,7 @@ function VerticalJourney() {
               ))}
             </ul>
             <ChapterActions project={p} onFocusJump={() => {}} />
-          </Reveal>
+          </article>
         ))}
       </div>
     </section>

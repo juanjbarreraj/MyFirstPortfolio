@@ -17,18 +17,18 @@ const STACK = [
   "Netlify",
 ];
 
+/* A quiet typographic band: the working stack, readable as real content.
+   No animation; the list simply wraps. */
 export default function Marquee() {
   return (
-    <>
-      <div className="marquee" aria-hidden="true">
-        <div className="marquee-track">
-          {/* list appears twice so the loop is seamless */}
-          {[...STACK, ...STACK].map((item, i) => (
-            <span key={i}>{item}</span>
-          ))}
-        </div>
-      </div>
-      <p className="sr-only">Core stack: {STACK.join(", ")}.</p>
-    </>
+    <div className="marquee">
+      <ul className="marquee-track" aria-label="Core stack">
+        {STACK.map((item) => (
+          <li key={item}>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
