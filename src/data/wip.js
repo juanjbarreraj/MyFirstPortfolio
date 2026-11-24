@@ -29,8 +29,10 @@ export const wip = [
     tags: ["React", "Vite", "IndexedDB demo", "PDF + Excel generation", "Spanish-first"],
     live: "https://juanjbarreraj.github.io/trackeo-demo/",
     liveLabel: "Preview the Trackeo demo (work in progress, opens in a new tab)",
-    repo: "https://github.com/juanjbarreraj/Trackeo",
-    repoLabel: "View the Trackeo repository on GitHub",
+    /* The Trackeo repository is private now: this button leads to the demo instead. */
+    repo: "https://juanjbarreraj.github.io/trackeo-demo/",
+    repoLabel: "View the Trackeo demo (opens in a new tab)",
+    repoText: "View the demo",
     mood: "wip-track",
   },
   {

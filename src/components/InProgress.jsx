@@ -131,7 +131,7 @@ export default function InProgress() {
                     rel="noopener noreferrer"
                     aria-label={p.repoLabel}
                   >
-                    Code
+                    {p.repoText || "Code"}
                   </a>
                 )}
               </div>
