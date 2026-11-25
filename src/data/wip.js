@@ -19,23 +19,6 @@ export const wip = [
     mood: "wip-art",
   },
   {
-    id: "trackeo",
-    name: "Trackeo",
-    category: "Sports results platform",
-    positioning: "Official athletics results, from paper to rankings.",
-    description:
-      "A results platform for athletics leagues: competition score sheets generated as matching PDF and Excel pairs, spreadsheet import with automatic recognition, and league rankings and records. The public demo runs entirely in the browser while the backend is in development.",
-    status: "Interactive demo live, backend in development",
-    tags: ["React", "Vite", "IndexedDB demo", "PDF + Excel generation", "Spanish-first"],
-    live: "https://juanjbarreraj.github.io/trackeo-demo/",
-    liveLabel: "Preview the Trackeo demo (work in progress, opens in a new tab)",
-    /* The Trackeo repository is private now: this button leads to the demo instead. */
-    repo: "https://juanjbarreraj.github.io/trackeo-demo/",
-    repoLabel: "View the Trackeo demo (opens in a new tab)",
-    repoText: "View the demo",
-    mood: "wip-track",
-  },
-  {
     id: "elglobo",
     name: "The Art of War and Peace",
     category: "Interactive art experience",

@@ -1709,7 +1709,7 @@ p {
   margin: 0 auto;
   padding: 0 var(--gutter);
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(1.2rem, 2.5vw, 1.8rem);
   align-items: stretch;
 }
@@ -1798,61 +1798,6 @@ p {
   transform: rotate(1.4deg);
   transform-origin: bottom right;
   box-shadow: var(--shadow-lg);
-}
-
-/* Trackeo: product frame + phone + track lanes */
-.wip-stage--track .wip-frame {
-  inset: 0 10% 10% 0;
-}
-
-.wip-phone {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 26%;
-  border-radius: 16px;
-  overflow: hidden;
-  border: 3px solid var(--ink);
-  background: #fff;
-  box-shadow: var(--shadow-lg);
-  z-index: 2;
-}
-
-.wip-phone img {
-  width: 100%;
-  aspect-ratio: 390 / 760;
-  object-fit: cover;
-  object-position: top center;
-  display: block;
-}
-
-.wip-lanes {
-  position: absolute;
-  top: -10px;
-  left: -8px;
-  width: 74px;
-  height: 30px;
-  z-index: -1;
-}
-
-.wip-lanes i {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: var(--sunset);
-  opacity: 0.75;
-  transform: rotate(-14deg);
-}
-
-.wip-lanes i:nth-child(2) {
-  top: 10px;
-  width: 78%;
-}
-
-.wip-lanes i:nth-child(3) {
-  top: 20px;
-  width: 52%;
 }
 
 /* El Globo: one full-bleed dark frame, gallery lighting */

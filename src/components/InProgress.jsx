@@ -41,31 +41,6 @@ const STAGES = {
     </div>
   ),
 
-  /* Trackeo: dark product UI + phone capture, with track-lane accents. */
-  trackeo: () => (
-    <div className="wip-stage wip-stage--track">
-      <WipFrame
-        src={asset("assets/work/wip/trackeo-home.jpg")}
-        alt="Homepage of the Trackeo athletics results platform demo"
-      />
-      <figure className="wip-phone">
-        <img
-          src={asset("assets/work/wip/trackeo-mobile.jpg")}
-          alt="Trackeo on a phone-sized screen"
-          width={390}
-          height={844}
-          loading="lazy"
-          decoding="async"
-        />
-      </figure>
-      <span className="wip-lanes" aria-hidden="true">
-        <i></i>
-        <i></i>
-        <i></i>
-      </span>
-    </div>
-  ),
-
   /* El Globo: a single full-bleed dark frame — gallery lighting, no chrome. */
   elglobo: () => (
     <div className="wip-stage wip-stage--globe">
@@ -83,7 +58,7 @@ export default function InProgress() {
     <section className="section section--band wip" id="in-progress" aria-labelledby="wip-title">
       <header className="section-head">
         <h2 id="wip-title">
-          Three builds,
+          Two builds,
           <br />
           in progress.
         </h2>
